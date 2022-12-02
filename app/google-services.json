@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "856360568105",
+    "project_id": "transport-5161f",
+    "storage_bucket": "transport-5161f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:856360568105:android:35a2589971a6649e4f6338",
+        "android_client_info": {
+          "package_name": "com.skysam.hchirinos.transport"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "856360568105-80g7opmo2idu3dkqugute0bdekri9sj0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwL9HOA8Q-qhs3wc8jatQMN-xAiCd4lSg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "856360568105-80g7opmo2idu3dkqugute0bdekri9sj0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

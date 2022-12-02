@@ -13,9 +13,9 @@
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.skysam.hchirinos.transport.ui.dashboard.DashboardFragment"
+        android:name="com.skysam.hchirinos.transport.ui.bookings.BookingFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_booking" />
 
     <fragment
         android:id="@+id/navigation_notifications"
