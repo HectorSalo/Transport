@@ -4,7 +4,9 @@ import android.content.ContentValues
 import android.util.Log
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.MetadataChanges
 import com.skysam.hchirinos.transport.common.Classes
 import com.skysam.hchirinos.transport.common.Constants
 import com.skysam.hchirinos.transport.dataClasses.Booking
@@ -12,9 +14,7 @@ import com.skysam.hchirinos.transport.dataClasses.Payment
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import java.text.DateFormat
 import java.util.*
-import kotlin.collections.HashMap
 
 /**
  * Created by Hector Chirinos on 01/12/2022.
@@ -34,7 +34,7 @@ object Bookings {
     fun getBookings(): Flow<MutableList<Booking>> {
         return callbackFlow {
             val request = getInstance()
-                .addSnapshotListener { value, error ->
+                .addSnapshotListener (MetadataChanges.INCLUDE) { value, error ->
                     if (error != null) {
                         Log.w(ContentValues.TAG, "Listen failed.", error)
                         return@addSnapshotListener
@@ -52,8 +52,8 @@ object Bookings {
                                 val date = timestamp.toDate()
 
                                 val prod = Payment(
-                                    item[Constants.WHO_PAID].toString(),
-                                    item[Constants.WHO_RECEIVED].toString(),
+                                    item[Constants.PAYER].toString(),
+                                    item[Constants.RECEIVER].toString(),
                                     date,
                                     item[Constants.AMOUNT].toString().toDouble()
                                 )
@@ -69,7 +69,7 @@ object Bookings {
                         )
                         bookings.add(bookingNew)
                     }
-                    trySend(bookings)
+                    trySend(Classes.organizedAlphabeticList(bookings))
                 }
             awaitClose { request.remove() }
         }
@@ -83,6 +83,12 @@ object Bookings {
             Constants.PAYMENTS to booking.payments
         )
         getInstance().add(data)
+    }
+
+    fun addPayment(id: String, payment: Payment) {
+        getInstance()
+            .document(id)
+            .update(Constants.PAYMENTS, FieldValue.arrayUnion(payment))
     }
 
     fun deleteBooking(id: String) {

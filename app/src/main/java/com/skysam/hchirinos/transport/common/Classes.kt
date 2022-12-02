@@ -4,6 +4,8 @@ import android.content.Context
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import com.skysam.hchirinos.transport.BuildConfig
+import com.skysam.hchirinos.transport.dataClasses.Booking
+import java.text.Collator
 import java.text.DateFormat
 import java.util.*
 
@@ -21,7 +23,22 @@ object Classes {
   imn.hideSoftInputFromWindow(view.windowToken, 0)
  }
 
+ fun convertDoubleToString(value: Double): String {
+  return String.format(Locale.GERMANY, "%,.2f", value)
+ }
+
  fun convertDateToString(value: Date): String {
   return DateFormat.getDateInstance().format(value)
+ }
+
+ fun organizedAlphabeticList(list: MutableList<Booking>): MutableList<Booking> {
+  Collections.sort(list, object : Comparator<Booking> {
+   var collator = Collator.getInstance()
+   override fun compare(p0: Booking?, p1: Booking?): Int {
+    return collator.compare(p0?.name, p1?.name)
+   }
+
+  })
+  return list
  }
 }

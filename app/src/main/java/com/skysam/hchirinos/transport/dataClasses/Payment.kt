@@ -7,8 +7,8 @@ import java.util.Date
  */
 
 data class Payment(
- var whoPaid: String,
- var whoReceived: String,
+ var payer: String,
+ var receiver: String,
  var date: Date,
  var amount: Double
 )

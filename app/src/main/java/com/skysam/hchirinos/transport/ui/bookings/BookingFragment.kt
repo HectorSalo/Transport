@@ -4,13 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.RecyclerView
 import com.skysam.hchirinos.transport.R
 import com.skysam.hchirinos.transport.dataClasses.Booking
 import com.skysam.hchirinos.transport.databinding.FragmentBookingBinding
+import com.skysam.hchirinos.transport.ui.common.WrapLayoutManager
+import com.skysam.hchirinos.transport.ui.payment.AddPaymentDialog
+import com.skysam.hchirinos.transport.ui.payment.ViewDetailsDialog
 
 class BookingFragment : Fragment(), OnClick {
 
@@ -19,6 +22,7 @@ class BookingFragment : Fragment(), OnClick {
     private val viewModel: BookingViewModel by activityViewModels()
     private lateinit var bookingAdapter: BookingAdapter
     private val bookings = mutableListOf<Booking>()
+    private lateinit var wrapLayoutManager: WrapLayoutManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,9 +36,11 @@ class BookingFragment : Fragment(), OnClick {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         bookingAdapter = BookingAdapter(bookings, this)
+        wrapLayoutManager = WrapLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         binding.rvBookings.apply {
             setHasFixedSize(true)
             adapter = bookingAdapter
+            layoutManager = wrapLayoutManager
         }
 
         loadViewModel()
@@ -53,9 +59,17 @@ class BookingFragment : Fragment(), OnClick {
                     binding.tvListEmpty.visibility = View.VISIBLE
                     binding.rvBookings.visibility = View.GONE
                 } else {
+                    val listTemp = mutableListOf<Booking>()
+                    for (item in bookings) {
+                        listTemp.add(item)
+                    }
                     bookings.clear()
                     bookings.addAll(it)
-                    bookingAdapter.notifyItemRangeInserted(0, bookings.size)
+
+                    if (listTemp.size == bookings.size) updateItem(listTemp)
+                    if (listTemp.size < bookings.size) addItem(listTemp)
+                    if (listTemp.size > bookings.size) deleteItem(listTemp)
+
                     binding.tvListEmpty.visibility = View.GONE
                     binding.rvBookings.visibility = View.VISIBLE
                 }
@@ -63,8 +77,41 @@ class BookingFragment : Fragment(), OnClick {
         }
     }
 
+    private fun deleteItem(listTemp: MutableList<Booking>) {
+        for (itemTemp in listTemp) {
+            if (!bookings.contains(itemTemp)) {
+                bookingAdapter.notifyItemRemoved(listTemp.indexOf(itemTemp))
+            }
+        }
+    }
+
+    private fun addItem(listTemp: MutableList<Booking>) {
+        if (listTemp.isEmpty()) {
+            bookingAdapter.notifyItemRangeInserted(0, bookings.size)
+            return
+        }
+        for (itemBook in bookings) {
+            if (!listTemp.contains(itemBook)) {
+                bookingAdapter.notifyItemInserted(bookings.indexOf(itemBook))
+            }
+        }
+    }
+
+    private fun updateItem(listTemp: MutableList<Booking>) {
+        for (itemTemp in listTemp) {
+            for (itemBook in bookings){
+                if (itemTemp.id == itemBook.id && itemTemp != itemBook) {
+                    bookingAdapter.notifyItemChanged(bookings.indexOf(itemBook))
+                    break
+                }
+            }
+        }
+    }
+
     override fun view(booking: Booking) {
-        TODO("Not yet implemented")
+        viewModel.viewBooking(booking)
+        val viewDetailsDialog = ViewDetailsDialog()
+        viewDetailsDialog.show(requireActivity().supportFragmentManager, tag)
     }
 
     override fun edit(booking: Booking) {
@@ -85,6 +132,8 @@ class BookingFragment : Fragment(), OnClick {
     }
 
     override fun addPayment(booking: Booking) {
-        TODO("Not yet implemented")
+        viewModel.viewBooking(booking)
+        val addPaymentDialog = AddPaymentDialog()
+        addPaymentDialog.show(requireActivity().supportFragmentManager, tag)
     }
 }

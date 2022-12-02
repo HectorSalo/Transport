@@ -41,5 +41,13 @@
     <string name="error_amount_zero">Monto inválido</string>
     <string name="error_receiver_null">Seleccione el cobrador</string>
     <string name="text_view_details">Ver detalles</string>
+    <string name="text_receiver_by">Recibido por %1$s</string>
+    <string name="text_payer_by">Pagado por %1$s</string>
+    <string name="text_date_paid">Pagdo el día %1$s</string>
+    <string name="text_amount_paid">$ %1$s</string>
+    <string name="text_resume_payments">Historial de pagos</string>
+    <string name="text_no_payments">No hay pagos realizados</string>
+    <string name="text_total_amount_paid">Total pagado ($) %1$s</string>
+    <string name="text_total_amount_debt">Total deuda ($) %1$s</string>
 
 </resources>
