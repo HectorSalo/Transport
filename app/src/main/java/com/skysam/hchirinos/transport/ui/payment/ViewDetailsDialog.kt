@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.skysam.hchirinos.transport.R
 import com.skysam.hchirinos.transport.common.Classes
 import com.skysam.hchirinos.transport.dataClasses.Booking
@@ -54,6 +56,7 @@ class ViewDetailsDialog: DialogFragment() {
         binding.rvPayments.apply {
             setHasFixedSize(true)
             adapter = adapterItems
+            addItemDecoration(DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL))
         }
 
         loadViewModel()
