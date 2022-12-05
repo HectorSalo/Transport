@@ -19,6 +19,15 @@
     <string name="msg_exit_dialog">Se perderá toda la información.\n¿Desea salir?</string>
     <string name="msg_delete_dialog">¿Desea eliminar esta información?</string>
 
+
+    <!-- Home -->
+    <string name="text_seats">Asientos</string>
+    <string name="text_available">Disponibles</string>
+    <string name="text_reserved">Reservados</string>
+    <string name="text_paids">Pagos ($)</string>
+    <string name="text_collected">Recaudado</string>
+    <string name="text_remainig">Restante</string>
+
     <!--Init-->
     <string name="text_type_pin">Ingrese Pin</string>
     <string name="error_pin_code">Pin Incorrecto</string>

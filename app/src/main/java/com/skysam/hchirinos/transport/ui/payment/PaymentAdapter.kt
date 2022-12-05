@@ -15,7 +15,8 @@ import com.skysam.hchirinos.transport.dataClasses.Payment
  * Created by Hector Chirinos on 02/12/2022.
  */
 
-class PaymentAdapter(private val payments: MutableList<Payment>, private val view: Boolean):
+class PaymentAdapter(private val payments: MutableList<Payment>, private val view: Boolean,
+                     private val onClick: OnClick):
     RecyclerView.Adapter<PaymentAdapter.ViewHolder>() {
     lateinit var context: Context
 
@@ -36,6 +37,10 @@ class PaymentAdapter(private val payments: MutableList<Payment>, private val vie
             Classes.convertDoubleToString(item.amount))
 
         if (view) holder.btnDelete.visibility = View.GONE
+
+        holder.btnDelete.setOnClickListener {
+            onClick.delete(item)
+        }
     }
 
     override fun getItemCount(): Int = payments.size

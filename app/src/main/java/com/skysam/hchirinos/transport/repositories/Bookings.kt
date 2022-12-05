@@ -85,6 +85,18 @@ object Bookings {
         getInstance().add(data)
     }
 
+    fun updateBooking(booking: Booking) {
+        val data = hashMapOf(
+            Constants.NAME to booking.name,
+            Constants.DATE to booking.date,
+            Constants.QUANTITY to booking.quantity,
+            Constants.PAYMENTS to booking.payments
+        )
+        getInstance()
+            .document(booking.id)
+            .update(data)
+    }
+
     fun addPayment(id: String, payment: Payment) {
         getInstance()
             .document(id)

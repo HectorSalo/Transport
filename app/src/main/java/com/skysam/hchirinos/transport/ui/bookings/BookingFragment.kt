@@ -10,6 +10,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.skysam.hchirinos.transport.R
 import com.skysam.hchirinos.transport.dataClasses.Booking
+import com.skysam.hchirinos.transport.dataClasses.Bus
 import com.skysam.hchirinos.transport.databinding.FragmentBookingBinding
 import com.skysam.hchirinos.transport.ui.common.WrapLayoutManager
 import com.skysam.hchirinos.transport.ui.payment.AddPaymentDialog
@@ -115,7 +116,9 @@ class BookingFragment : Fragment(), OnClick {
     }
 
     override fun edit(booking: Booking) {
-        TODO("Not yet implemented")
+        viewModel.viewBooking(booking)
+        val updateBookingDialog = UpdateBookingDialog()
+        updateBookingDialog.show(requireActivity().supportFragmentManager, tag)
     }
 
     override fun delete(booking: Booking) {

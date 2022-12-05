@@ -6,6 +6,6 @@ package com.skysam.hchirinos.transport.dataClasses
 
 data class Bus(
  val id: String,
- var numberSeats: Int,
+ var quantity: Int,
  var price: Double
 )
