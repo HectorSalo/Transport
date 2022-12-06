@@ -7,8 +7,11 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.MetadataChanges
+import com.skysam.hchirinos.transport.R
 import com.skysam.hchirinos.transport.common.Classes
 import com.skysam.hchirinos.transport.common.Constants
+import com.skysam.hchirinos.transport.common.Notifications
+import com.skysam.hchirinos.transport.common.Transport
 import com.skysam.hchirinos.transport.dataClasses.Booking
 import com.skysam.hchirinos.transport.dataClasses.Payment
 import kotlinx.coroutines.channels.awaitClose
@@ -44,7 +47,6 @@ object Bookings {
                     for (booking in value!!) {
                         val payments = mutableListOf<Payment>()
                         if (booking.get(Constants.PAYMENTS) != null) {
-                            val calendar = Calendar.getInstance()
                             @Suppress("UNCHECKED_CAST")
                             val list = booking.data.getValue(Constants.PAYMENTS) as MutableList<HashMap<String, Any>>
                             for (item in list) {
@@ -101,6 +103,14 @@ object Bookings {
         getInstance()
             .document(id)
             .update(Constants.PAYMENTS, FieldValue.arrayUnion(payment))
+            .addOnSuccessListener {
+                Notifications.sendNotification(
+                    Transport.Transport.getContext().getString(R.string.notification_received_title),
+                    Transport.Transport.getContext().getString(R.string.notification_received_message,
+                        payment.payer, payment.amount.toString()),
+                    Notifications.PATH_NOTIFICATION
+                )
+            }
     }
 
     fun deleteBooking(id: String) {

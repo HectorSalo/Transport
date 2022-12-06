@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.callbackFlow
  */
 
 object InitSession {
- private fun getInstance(): FirebaseAuth {
+ fun getInstance(): FirebaseAuth {
   return FirebaseAuth.getInstance()
  }
 

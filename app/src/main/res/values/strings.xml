@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Transporte</string>
     <string name="title_home">Inicio</string>
-    <string name="title_dashboard">Reservas</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_bookings">Reservas</string>
+    <string name="title_settigns">Ajustes</string>
 
     <!--General-->
     <string name="text_list_empty">No hay ítems para mostrar</string>
@@ -32,6 +32,7 @@
     <string name="text_type_pin">Ingrese Pin</string>
     <string name="error_pin_code">Pin Incorrecto</string>
     <string name="error_init_session">Error al iniciar sesión</string>
+    <string name="text_initing_session">Iniciando sesión</string>
 
     <!--Booking-->
     <string name="text_quantity_seats_item">%1$s asiento(s)</string>
@@ -58,5 +59,20 @@
     <string name="text_no_payments">No hay pagos realizados</string>
     <string name="text_total_amount_paid">Total pagado ($) %1$s</string>
     <string name="text_total_amount_debt">Total deuda ($) %1$s</string>
+
+    <!--Settings -->
+    <string name="text_about">Información de la App</string>>
+    <string name="version_name">Versión %1$s</string>
+    <string name="title_sign_out">Cerrar sesión</string>
+    <string name="message_sign_out">¿Desea cerrar la sesión actual?</string>
+    <string name="title_profile">Personal</string>
+
+    <!-- Notification Preferences -->
+    <string name="notification_key">notification</string>
+    <string name="notification_header">Notificaciones</string>
+    <string name="notification_title">Notificaciones activas</string>
+    <string name="notification_title_off">Notificaciones apagadas</string>
+    <string name="notification_received_title">¡Pago realizado!</string>
+    <string name="notification_received_message">%1$s acaba de pagar $ %2$s</string>
 
 </resources>

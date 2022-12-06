@@ -53,13 +53,22 @@ class InitActivity : AppCompatActivity(), View.OnClickListener {
         }
         viewModel.passAccept.observe(this) {
             if (it) {
+                binding.progressBar2.visibility = View.VISIBLE
+                Snackbar.make(binding.root, R.string.text_initing_session, Snackbar.LENGTH_LONG).show()
                 viewModel.initSession().observe(this) { msg ->
                     if (!msg.isNullOrEmpty()) {
                         if (msg == Constants.OK) {
+                            binding.progressBar2.visibility = View.GONE
                             startActivity(Intent(this, MainActivity::class.java))
                             finish()
-                        } else Snackbar.make(binding.root, msg, Snackbar.LENGTH_LONG).show()
-                    } else Snackbar.make(binding.root, R.string.error_init_session, Snackbar.LENGTH_LONG).show()
+                        } else {
+                            binding.progressBar2.visibility = View.GONE
+                            Snackbar.make(binding.root, msg, Snackbar.LENGTH_LONG).show()
+                        }
+                    } else {
+                        binding.progressBar2.visibility = View.GONE
+                        Snackbar.make(binding.root, R.string.error_init_session, Snackbar.LENGTH_LONG).show()
+                    }
                 }
             } else {
                 Snackbar.make(binding.root, R.string.error_pin_code, Snackbar.LENGTH_LONG).show()

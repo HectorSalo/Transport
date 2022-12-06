@@ -6,20 +6,31 @@
     android:layout_height="match_parent"
     tools:context=".ui.init.InitActivity">
 
+    <ProgressBar
+        android:id="@+id/progressBar2"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:indeterminate="true"
+        android:visibility="gone"/>
+
     <TextView
         android:id="@+id/tv_pin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
+        android:gravity="center"
+        android:hint="@string/text_type_pin"
+        android:maxLength="4"
+        android:textSize="48sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:hint="@string/text_type_pin"
-        android:gravity="center"
-        android:textSize="48sp"
-        android:maxLength="4"/>
+        app:layout_constraintTop_toBottomOf="@+id/progressBar2" />
 
     <TableLayout
         android:layout_width="0dp"
