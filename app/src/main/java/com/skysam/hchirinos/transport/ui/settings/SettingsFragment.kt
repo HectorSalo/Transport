@@ -9,6 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceScreen
 import androidx.preference.SwitchPreferenceCompat
+import com.skysam.hchirinos.transport.BuildConfig
 import com.skysam.hchirinos.transport.R
 import com.skysam.hchirinos.transport.common.InitSession
 import com.skysam.hchirinos.transport.ui.init.InitActivity
@@ -35,6 +36,9 @@ class SettingsFragment : PreferenceFragmentCompat() {
             }
             true
         }
+
+        val versionPreferenceScreen = findPreference<PreferenceScreen>("name_version")
+        versionPreferenceScreen?.title = getString(R.string.version_name, BuildConfig.VERSION_NAME)
 
         val signOutPreference: PreferenceScreen = findPreference("signOut")!!
         signOutPreference.setOnPreferenceClickListener {

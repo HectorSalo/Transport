@@ -15,7 +15,7 @@ import com.skysam.hchirinos.transport.dataClasses.Booking
  * Created by Hector Chirinos on 01/12/2022.
  */
 
-class BookingAdapter(private val bookings: MutableList<Booking>, private val onClick: OnClick):
+class BookingAdapter(private var bookings: MutableList<Booking>, private val onClick: OnClick):
     RecyclerView.Adapter<BookingAdapter.ViewHolder>() {
     lateinit var context: Context
 
@@ -56,5 +56,10 @@ class BookingAdapter(private val bookings: MutableList<Booking>, private val onC
         val quantity: TextView = view.findViewById(R.id.tv_quantity)
         val menu: TextView = view.findViewById(R.id.tv_menu)
         val card: MaterialCardView = view.findViewById(R.id.card)
+    }
+
+    fun updateList(newList: MutableList<Booking>) {
+        bookings = newList
+        notifyDataSetChanged()
     }
 }
