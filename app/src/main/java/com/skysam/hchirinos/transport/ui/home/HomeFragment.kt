@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.skysam.hchirinos.transport.R
 import com.skysam.hchirinos.transport.dataClasses.Booking
 import com.skysam.hchirinos.transport.dataClasses.Bus
 import com.skysam.hchirinos.transport.databinding.FragmentHomeBinding
@@ -71,14 +72,16 @@ class HomeFragment : Fragment() {
 
     private fun showSeats() {
         if (bus != null) {
-            binding.tvAvailables.text = (bus!!.quantity - seatsReserved).toString()
+            binding.tvAvailables.text = if (bus!!.quantity != 0) (bus!!.quantity - seatsReserved).toString()
+            else getString(R.string.text_not_define)
             binding.tvReserved.text = seatsReserved.toString()
         }
     }
 
     private fun showPaids() {
         if (bus != null) {
-            binding.tvRemaining.text = (bus!!.price - totalPaid).toString()
+            binding.tvRemaining.text =  if (bus!!.price != 0.0) (bus!!.price - totalPaid).toString()
+            else getString(R.string.text_not_define)
             binding.tvCollected.text = totalPaid.toString()
         }
     }

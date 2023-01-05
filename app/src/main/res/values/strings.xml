@@ -27,6 +27,7 @@
     <string name="text_paids">Pagos ($)</string>
     <string name="text_collected">Recaudado</string>
     <string name="text_remainig">Restante</string>
+    <string name="text_not_define">Sin definir</string>
 
     <!--Init-->
     <string name="text_type_pin">Ingrese Pin</string>
