@@ -4,6 +4,9 @@
         android:title="@string/text_add_payment"
         android:id="@+id/menu_add_payment"/>
     <item
+        android:title="@string/text_add_refund"
+        android:id="@+id/menu_add_refund"/>
+    <item
         android:title="@string/text_edit"
         android:id="@+id/menu_edit"/>
     <item

@@ -14,7 +14,7 @@ import com.skysam.hchirinos.transport.dataClasses.Booking
 import com.skysam.hchirinos.transport.databinding.FragmentBookingBinding
 import com.skysam.hchirinos.transport.ui.common.WrapLayoutManager
 import com.skysam.hchirinos.transport.ui.payment.AddPaymentDialog
-import com.skysam.hchirinos.transport.ui.payment.ViewDetailsDialog
+import com.skysam.hchirinos.transport.ui.refund.AddRefundDialog
 
 class BookingFragment : Fragment(), OnClick, MenuProvider, SearchView.OnQueryTextListener {
 
@@ -162,6 +162,12 @@ class BookingFragment : Fragment(), OnClick, MenuProvider, SearchView.OnQueryTex
         viewModel.viewBooking(booking)
         val addPaymentDialog = AddPaymentDialog()
         addPaymentDialog.show(requireActivity().supportFragmentManager, tag)
+    }
+
+    override fun addRefund(booking: Booking) {
+        viewModel.viewBooking(booking)
+        val addRefundDialog = AddRefundDialog()
+        addRefundDialog.show(requireActivity().supportFragmentManager, tag)
     }
 
     override fun onCreateMenu(menu: Menu, inflater: MenuInflater) {

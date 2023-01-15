@@ -10,15 +10,17 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.skysam.hchirinos.transport.R
 import com.skysam.hchirinos.transport.common.Classes
 import com.skysam.hchirinos.transport.dataClasses.Booking
-import com.skysam.hchirinos.transport.dataClasses.Bus
 import com.skysam.hchirinos.transport.dataClasses.Payment
+import com.skysam.hchirinos.transport.dataClasses.Refund
 import com.skysam.hchirinos.transport.databinding.DialogEditBookingBinding
 import com.skysam.hchirinos.transport.ui.common.ExitDialog
 import com.skysam.hchirinos.transport.ui.common.OnClick
+import com.skysam.hchirinos.transport.ui.common.WrapLayoutManager
 import com.skysam.hchirinos.transport.ui.payment.PaymentAdapter
 import java.text.DateFormat
 import java.util.*
@@ -35,10 +37,11 @@ class UpdateBookingDialog: DialogFragment(), OnClick,
     private lateinit var dateSelected: Date
     private lateinit var booking: Booking
     private lateinit var adapterItems: PaymentAdapter
+    private lateinit var wrapLayoutManager: WrapLayoutManager
     private val payments = mutableListOf<Payment>()
-    private lateinit var bus: Bus
-    private var totalPay = 0.0
-    private var priceSeat = 0.0
+    private val paymentsToSee = mutableListOf<Payment>()
+    private val refunds = mutableListOf<Refund>()
+    private var seePayments = true
     private var quantity = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,19 +73,26 @@ class UpdateBookingDialog: DialogFragment(), OnClick,
             binding.tfQuantity.error = null
             if (binding.etQuantity.text.toString().isNotEmpty()) {
                 quantity = binding.etQuantity.text.toString().toInt()
-                calculateDebt()
+                calculate()
             }
         }
 
-        adapterItems = PaymentAdapter(payments, false, this)
+        adapterItems = PaymentAdapter(paymentsToSee, false, this)
+        wrapLayoutManager = WrapLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         binding.rvPayments.apply {
             setHasFixedSize(true)
             adapter = adapterItems
             addItemDecoration(DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL))
+            layoutManager = wrapLayoutManager
         }
 
         binding.etName.doAfterTextChanged { binding.tfName.error = null }
         binding.etQuantity.doAfterTextChanged { binding.tfQuantity.error = null }
+
+        binding.radioGroup2.setOnCheckedChangeListener { _, id ->
+            seePayments = id == R.id.rb_payments
+            changeAdapter()
+        }
 
         binding.etDate.setOnClickListener { selecDate() }
         binding.btnExit.setOnClickListener { getOut() }
@@ -107,39 +117,69 @@ class UpdateBookingDialog: DialogFragment(), OnClick,
                 binding.etQuantity.setText(booking.quantity.toString())
                 payments.clear()
                 payments.addAll(booking.payments)
-                adapterItems.notifyItemRangeInserted(0, booking.payments.size)
+                refunds.clear()
+                refunds.addAll(booking.refunds)
+                changeAdapter()
 
                 if (payments.isEmpty()) {
-                    binding.tvTitle.text = getString(R.string.text_no_payments)
                     binding.rvPayments.visibility = View.GONE
                     binding.tvPaid.visibility = View.GONE
                 } else {
-                    binding.tvTitle.text = getString(R.string.text_resume_payments)
+                    binding.tvTitle.visibility = View.GONE
                 }
                 calculatePaid()
-                calculateDebt()
-            }
-        }
-        viewModel.bus.observe(viewLifecycleOwner) {
-            if (_binding != null) {
-                bus = it
-                priceSeat = bus.price / bus.quantity
-                calculateDebt()
+                calculate()
             }
         }
     }
 
     private fun calculatePaid() {
-        totalPay = 0.0
-        for (pay in payments) {
-            totalPay += pay.amount
-        }
-        binding.tvPaid.text = getString(R.string.text_total_amount_paid, Classes.convertDoubleToString(totalPay))
+        binding.tvPaid.text = getString(R.string.text_total_amount_paid,
+            Classes.convertDoubleToString(Classes.totalPayments(payments)))
     }
 
-    private fun calculateDebt() {
-        binding.tvDebt.text = getString(R.string.text_total_amount_debt,
-            Classes.convertDoubleToString((priceSeat * quantity) - totalPay))
+    private fun calculate() {
+        val diff = Classes.getTotalBooking(quantity) + Classes.totalRefunds(refunds) -
+                Classes.totalPayments(payments)
+        if (diff == 0.0) binding.tvDebt.visibility = View.GONE
+        if (diff > 0.0) binding.tvDebt.text = getString(R.string.text_total_amount_debt,
+            Classes.convertDoubleToString(diff))
+        if (diff < 0.0) binding.tvDebt.text = getString(R.string.text_total_amount_refund_pending,
+            Classes.convertDoubleToString(diff * (-1)))
+    }
+
+    private fun changeAdapter() {
+        if (seePayments) {
+            adapterItems.notifyItemRangeRemoved(0, paymentsToSee.size)
+            paymentsToSee.clear()
+            paymentsToSee.addAll(payments)
+            adapterItems.notifyItemRangeInserted(0, paymentsToSee.size)
+            if (paymentsToSee.isEmpty()) {
+                binding.tvTitle.text = getString(R.string.text_no_payments)
+                binding.tvTitle.visibility = View.VISIBLE
+            } else {
+                binding.tvTitle.visibility = View.GONE
+            }
+        } else {
+            adapterItems.notifyItemRangeRemoved(0, paymentsToSee.size)
+            paymentsToSee.clear()
+            for (ref in refunds) {
+                val newPay = Payment(
+                    ref.payer,
+                    ref.receiver,
+                    ref.date,
+                    ref.amount
+                )
+                paymentsToSee.add(newPay)
+            }
+            adapterItems.notifyItemRangeInserted(0, paymentsToSee.size)
+            if (paymentsToSee.isEmpty()) {
+                binding.tvTitle.text = getString(R.string.text_no_refunds)
+                binding.tvTitle.visibility = View.VISIBLE
+            } else {
+                binding.tvTitle.visibility = View.GONE
+            }
+        }
     }
 
     private fun selecDate() {
@@ -184,7 +224,8 @@ class UpdateBookingDialog: DialogFragment(), OnClick,
             name,
             quantityS.toInt(),
             dateSelected,
-            payments
+            payments,
+            refunds
         )
 
         viewModel.updateBooking(booking)
@@ -201,10 +242,21 @@ class UpdateBookingDialog: DialogFragment(), OnClick,
     }
 
     override fun delete(payment: Payment) {
-        adapterItems.notifyItemRemoved(payments.indexOf(payment))
-        payments.remove(payment)
+        adapterItems.notifyItemRemoved(paymentsToSee.indexOf(payment))
+        paymentsToSee.remove(payment)
+        if (seePayments) {
+            payments.remove(payment)
+        } else {
+            val newRef = Refund(
+                payment.payer,
+                payment.receiver,
+                payment.date,
+                payment.amount
+            )
+            refunds.remove(newRef)
+        }
         calculatePaid()
-        calculateDebt()
+        calculate()
     }
 
 }

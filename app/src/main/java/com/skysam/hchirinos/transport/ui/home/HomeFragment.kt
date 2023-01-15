@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.skysam.hchirinos.transport.R
+import com.skysam.hchirinos.transport.common.Classes
 import com.skysam.hchirinos.transport.dataClasses.Booking
 import com.skysam.hchirinos.transport.dataClasses.Bus
 import com.skysam.hchirinos.transport.databinding.FragmentHomeBinding
@@ -22,6 +23,7 @@ class HomeFragment : Fragment() {
     private var bus: Bus? = null
     private var seatsReserved = 0
     private var totalPaid = 0.0
+    private var totalRefunds = 0.0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,14 +53,19 @@ class HomeFragment : Fragment() {
                 bookings.addAll(it)
                 seatsReserved = 0
                 totalPaid = 0.0
+                totalRefunds = 0.0
                 for (book in bookings) {
                     seatsReserved += book.quantity
                     for (payment in book.payments) {
                         totalPaid += payment.amount
                     }
+                    for (refund in book.refunds) {
+                        totalRefunds += refund.amount
+                    }
                 }
                 showSeats()
                 showPaids()
+                showRefunds()
             }
         }
         viewModel.bus.observe(viewLifecycleOwner) {
@@ -66,6 +73,8 @@ class HomeFragment : Fragment() {
                 bus = it
                 showSeats()
                 showPaids()
+                showRefunds()
+                viewModel.changePriceSeat(bus!!)
             }
         }
     }
@@ -80,9 +89,22 @@ class HomeFragment : Fragment() {
 
     private fun showPaids() {
         if (bus != null) {
-            binding.tvRemaining.text =  if (bus!!.price != 0.0) (bus!!.price - totalPaid).toString()
+            binding.tvRemaining.text =  if (bus!!.price != 0.0) (bus!!.price + totalRefunds - totalPaid).toString()
             else getString(R.string.text_not_define)
-            binding.tvCollected.text = totalPaid.toString()
+            binding.tvCollected.text = (totalPaid - totalRefunds).toString()
+        }
+    }
+
+    private fun showRefunds() {
+        if (bus != null) {
+            var total = 0.0
+            for (booking in bookings) {
+                val diff = Classes.getTotalBooking(booking.quantity) + Classes.totalRefunds(booking.refunds) -
+                        Classes.totalPayments(booking.payments)
+                if (diff < 0.0) total += diff
+            }
+            binding.tvRefund.text =  if (total != 0.0) (total * (-1)).toString()
+            else getString(R.string.text_not_define)
         }
     }
 }

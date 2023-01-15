@@ -24,6 +24,7 @@ object Constants {
     const val QUANTITY = "quantity"
     const val DATE = "date"
     const val PAYMENTS = "payments"
+    const val REFUNDS = "refunds"
     const val PAYER = "payer"
     const val AMOUNT = "amount"
     const val RECEIVER = "receiver"

@@ -14,6 +14,7 @@ import com.skysam.hchirinos.transport.common.Notifications
 import com.skysam.hchirinos.transport.common.Transport
 import com.skysam.hchirinos.transport.dataClasses.Booking
 import com.skysam.hchirinos.transport.dataClasses.Payment
+import com.skysam.hchirinos.transport.dataClasses.Refund
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -62,12 +63,30 @@ object Bookings {
                                 payments.add(prod)
                             }
                         }
+                        val refunds = mutableListOf<Refund>()
+                        if (booking.get(Constants.REFUNDS) != null) {
+                            @Suppress("UNCHECKED_CAST")
+                            val list = booking.data.getValue(Constants.REFUNDS) as MutableList<HashMap<String, Any>>
+                            for (item in list) {
+                                val timestamp: Timestamp = item[Constants.DATE] as Timestamp
+                                val date = timestamp.toDate()
+
+                                val prod = Refund(
+                                    item[Constants.PAYER].toString(),
+                                    item[Constants.RECEIVER].toString(),
+                                    date,
+                                    item[Constants.AMOUNT].toString().toDouble()
+                                )
+                                refunds.add(prod)
+                            }
+                        }
                         val bookingNew = Booking(
                             booking.id,
                             booking.getString(Constants.NAME)!!,
                             booking.getDouble(Constants.QUANTITY)!!.toInt(),
                             booking.getDate(Constants.DATE)!!,
-                            payments
+                            payments,
+                            refunds
                         )
                         bookings.add(bookingNew)
                     }
@@ -82,7 +101,8 @@ object Bookings {
             Constants.NAME to booking.name,
             Constants.DATE to booking.date,
             Constants.QUANTITY to booking.quantity,
-            Constants.PAYMENTS to booking.payments
+            Constants.PAYMENTS to booking.payments,
+            Constants.REFUNDS to booking.refunds
         )
         getInstance().add(data)
     }
@@ -92,7 +112,8 @@ object Bookings {
             Constants.NAME to booking.name,
             Constants.DATE to booking.date,
             Constants.QUANTITY to booking.quantity,
-            Constants.PAYMENTS to booking.payments
+            Constants.PAYMENTS to booking.payments,
+            Constants.REFUNDS to booking.refunds
         )
         getInstance()
             .document(booking.id)
@@ -111,6 +132,12 @@ object Bookings {
                     Notifications.PATH_NOTIFICATION
                 )
             }
+    }
+
+    fun addRefund(id: String, refund: Refund) {
+        getInstance()
+            .document(id)
+            .update(Constants.REFUNDS, FieldValue.arrayUnion(refund))
     }
 
     fun deleteBooking(id: String) {

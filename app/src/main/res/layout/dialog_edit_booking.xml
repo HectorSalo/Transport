@@ -92,20 +92,31 @@
             app:layout_constraintTop_toTopOf="parent" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
-        android:id="@+id/tv_title"
-        style="@style/TextAppearance.MaterialComponents.Body1"
-        android:layout_width="0dp"
+    <RadioGroup
+        android:id="@+id/radioGroup2"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
-        android:gravity="center"
-        android:text="@string/app_name"
-        android:textSize="18sp"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tf_date" />
+        app:layout_constraintTop_toBottomOf="@+id/tf_quantity">
+
+        <RadioButton
+            android:id="@+id/rb_payments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/text_resume_payments" />
+
+        <RadioButton
+            android:id="@+id/rb_refunds"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/text_resume_refunds" />
+    </RadioGroup>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_payments"
@@ -119,8 +130,20 @@
         app:layout_constraintBottom_toTopOf="@+id/tv_paid"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup2"
         tools:listitem="@layout/layout_item_payment" />
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_no_payments"
+        style="@style/TextAppearance.AppCompat.Title"
+        app:layout_constraintBottom_toBottomOf="@+id/rv_payments"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup2"
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/tv_paid"

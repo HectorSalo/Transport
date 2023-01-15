@@ -27,6 +27,7 @@
     <string name="text_paids">Pagos ($)</string>
     <string name="text_collected">Recaudado</string>
     <string name="text_remainig">Restante</string>
+    <string name="text_refunds_remainig">Vueltos pendientes ($)</string>
     <string name="text_not_define">Sin definir</string>
 
     <!--Init-->
@@ -41,7 +42,9 @@
     <string name="text_name">Nombre</string>
     <string name="text_quantity_seats">N° asientos</string>
     <string name="text_receiver_paid">Receptor del pago</string>
+    <string name="text_receiver_refund">Receptor del vuelto</string>
     <string name="text_add_payment">Agregar Pago</string>
+    <string name="text_add_refund">Agregar Vuelto</string>
     <string name="text_hector">Héctor</string>
     <string name="text_carlos">Carlos</string>
     <string name="text_jesus">Jesús</string>
@@ -54,12 +57,16 @@
     <string name="text_view_details">Ver detalles</string>
     <string name="text_receiver_by">Recibido por %1$s</string>
     <string name="text_payer_by">Pagado por %1$s</string>
-    <string name="text_date_paid">Pagdo el día %1$s</string>
+    <string name="text_date_paid">Pagado el día %1$s</string>
     <string name="text_amount_paid">$ %1$s</string>
     <string name="text_resume_payments">Historial de pagos</string>
     <string name="text_no_payments">No hay pagos realizados</string>
+    <string name="text_resume_refunds">Historial de vueltos</string>
+    <string name="text_no_refunds">No hay vueltos realizados</string>
     <string name="text_total_amount_paid">Total pagado ($) %1$s</string>
     <string name="text_total_amount_debt">Total deuda ($) %1$s</string>
+    <string name="text_total_amount_refund_pending">Vuelto pendiente ($) %1$s</string>
+    <string name="text_total_amount_refund">Vuelto entregado ($) %1$s</string>
 
     <!--Settings -->
     <string name="text_about">Información de la App</string>>

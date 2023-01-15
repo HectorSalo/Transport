@@ -5,6 +5,8 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import com.skysam.hchirinos.transport.BuildConfig
 import com.skysam.hchirinos.transport.dataClasses.Booking
+import com.skysam.hchirinos.transport.dataClasses.Payment
+import com.skysam.hchirinos.transport.dataClasses.Refund
 import java.text.Collator
 import java.text.DateFormat
 import java.util.*
@@ -40,5 +42,25 @@ object Classes {
 
   })
   return list
+ }
+
+ fun getTotalBooking(quantity: Int): Double {
+  return Preferences.getPriceSeat() * quantity
+ }
+
+ fun totalPayments(payments: MutableList<Payment>): Double {
+  var total = 0.0
+  for (payment in payments) {
+   total += payment.amount
+  }
+  return total
+ }
+
+ fun totalRefunds(refunds: MutableList<Refund>): Double {
+  var total = 0.0
+  for (refund in refunds) {
+   total += refund.amount
+  }
+  return total
  }
 }
