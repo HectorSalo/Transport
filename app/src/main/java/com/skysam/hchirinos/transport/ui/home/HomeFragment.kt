@@ -66,6 +66,7 @@ class HomeFragment : Fragment() {
                 showSeats()
                 showPaids()
                 showRefunds()
+                showBookingsBalance()
             }
         }
         viewModel.bus.observe(viewLifecycleOwner) {
@@ -74,6 +75,7 @@ class HomeFragment : Fragment() {
                 showSeats()
                 showPaids()
                 showRefunds()
+                showBookingsBalance()
                 viewModel.changePriceSeat(bus!!)
             }
         }
@@ -103,8 +105,27 @@ class HomeFragment : Fragment() {
                         Classes.totalPayments(booking.payments)
                 if (diff < 0.0) total += diff
             }
-            binding.tvRefund.text =  if (total != 0.0) (total * (-1)).toString()
-            else getString(R.string.text_not_define)
+            if (total != 0.0) {
+                binding.tvRefund.visibility = View.VISIBLE
+                binding.textView9.visibility = View.VISIBLE
+                binding.tvRefund.text = (total * (-1)).toString()
+            } else {
+                binding.tvRefund.visibility = View.GONE
+                binding.textView9.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun showBookingsBalance() {
+        if (bus != null) {
+            var totalPaid = 0
+            for (booking in bookings) {
+                val diff = Classes.getTotalBooking(booking.quantity) -
+                        Classes.totalPayments(booking.payments)
+                if (diff <= 0) totalPaid += 1
+            }
+            binding.tvBookingsPaid.text = totalPaid.toString()
+            binding.tvBookingsRemaning.text = (bookings.size - totalPaid).toString()
         }
     }
 }
