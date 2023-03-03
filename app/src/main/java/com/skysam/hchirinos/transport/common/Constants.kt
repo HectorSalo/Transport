@@ -32,6 +32,9 @@ object Constants {
     const val BUS = "bus"
     const val PRICE = "price"
 
+    const val BUS_FIRST = "first"
+    const val BUS_SECOND = "second"
+
     const val METHOD = "method"
     const val TITLE = "title"
     const val MESSAGE = "message"

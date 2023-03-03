@@ -1,5 +1,6 @@
 package com.skysam.hchirinos.transport.dataClasses
 
+import com.skysam.hchirinos.transport.common.Constants
 import java.util.Date
 
 /**
@@ -12,5 +13,6 @@ data class Booking(
     var quantity: Int = 1,
     var date: Date,
     var payments: MutableList<Payment> = mutableListOf(),
-    var refunds: MutableList<Refund> = mutableListOf()
+    var refunds: MutableList<Refund> = mutableListOf(),
+    var bus: String = Constants.BUS_FIRST
 )

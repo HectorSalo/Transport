@@ -2,6 +2,7 @@
     <string name="app_name">Transporte</string>
     <string name="title_home">Inicio</string>
     <string name="title_bookings">Reservaciones</string>
+    <string name="title_travel">Viaje</string>
     <string name="title_settigns">Ajustes</string>
 
     <!--General-->
@@ -69,6 +70,10 @@
     <string name="text_total_amount_debt">Total deuda ($) %1$s</string>
     <string name="text_total_amount_refund_pending">Vuelto pendiente ($) %1$s</string>
     <string name="text_total_amount_refund">Vuelto entregado ($) %1$s</string>
+
+    <!--Travel -->
+    <string name="text_bus_first">Ruta Washington</string>>
+    <string name="text_bus_second">Ruta Madariaga</string>
 
     <!--Settings -->
     <string name="text_about">Información de la App</string>>
