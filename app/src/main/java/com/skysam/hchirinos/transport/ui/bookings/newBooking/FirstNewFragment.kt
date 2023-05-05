@@ -29,6 +29,7 @@ class FirstNewFragment : Fragment(), TextWatcher, OnClick {
     private val binding get() = _binding!!
     private val viewModel: BookingViewModel by activityViewModels()
     private lateinit var dateSelected: Date
+    private var assambly = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -64,11 +65,28 @@ class FirstNewFragment : Fragment(), TextWatcher, OnClick {
         }
 
         binding.btnSave.setOnClickListener { validateData() }
+
+        loadViewModels()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun loadViewModels() {
+        viewModel.assemblyActive.observe(viewLifecycleOwner) {
+            if (_binding != null) {
+                assambly = it
+                if (it) {
+                    binding.textView1.visibility = View.VISIBLE
+                    binding.rgAssembly.visibility = View.VISIBLE
+                } else {
+                    binding.textView1.visibility = View.GONE
+                    binding.rgAssembly.visibility = View.GONE
+                }
+            }
+        }
     }
 
     private fun selecDate() {
@@ -108,6 +126,13 @@ class FirstNewFragment : Fragment(), TextWatcher, OnClick {
             binding.tfQuantity.error = getString(R.string.error_quantity_zero)
             binding.etQuantity.requestFocus()
             return
+        }
+
+        var days = 1
+        if (assambly) {
+            if (binding.rb1.isChecked) days = 1
+            if (binding.rb2.isChecked) days = 2
+            if (binding.rb3.isChecked) days = 3
         }
 
         val payments = mutableListOf<Payment>()
@@ -153,7 +178,8 @@ class FirstNewFragment : Fragment(), TextWatcher, OnClick {
             name,
             quantityS.toInt(),
             dateSelected,
-            payments
+            payments,
+            days = days
         )
 
         viewModel.addBooking(booking)

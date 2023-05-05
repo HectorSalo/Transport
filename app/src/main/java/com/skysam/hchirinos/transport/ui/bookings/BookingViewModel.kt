@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
+import com.skysam.hchirinos.transport.common.Preferences
 import com.skysam.hchirinos.transport.dataClasses.Booking
 import com.skysam.hchirinos.transport.dataClasses.Payment
 import com.skysam.hchirinos.transport.dataClasses.Refund
@@ -11,6 +12,7 @@ import com.skysam.hchirinos.transport.repositories.Bookings
 
 class BookingViewModel : ViewModel() {
     val bookings: LiveData<MutableList<Booking>> = Bookings.getBookings().asLiveData()
+    val assemblyActive: LiveData<Boolean> = Preferences.getAssemblyStatus().asLiveData()
 
     private val _bookingToView = MutableLiveData<Booking>()
     val bookingToView: LiveData<Booking> get() = _bookingToView

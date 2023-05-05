@@ -18,8 +18,4 @@
     <fragment
         android:id="@+id/navigation_settings"
         android:name="com.skysam.hchirinos.transport.ui.settings.SettingsFragment" />
-    <fragment
-        android:id="@+id/navigation_travel"
-        android:name="com.skysam.hchirinos.transport.ui.travel.TravelFragment"
-        tools:layout="@layout/fragment_travel" />
 </navigation>

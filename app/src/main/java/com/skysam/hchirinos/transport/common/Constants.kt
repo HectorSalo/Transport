@@ -14,6 +14,7 @@ object Constants {
 
     const val PREFERENCES = "preferences"
     const val PREFERENCES_NOTIFICATION = "notification"
+    const val PREFERENCES_ASSEMBLY = "assembly"
     const val TOPIC_ALL_NOTIFICATIONS_DEMO = "allNotificationsDemo"
     const val TOPIC_ALL_NOTIFICATIONS = "allNotifications"
 
@@ -28,12 +29,10 @@ object Constants {
     const val PAYER = "payer"
     const val AMOUNT = "amount"
     const val RECEIVER = "receiver"
+    const val DAYS = "days"
 
     const val BUS = "bus"
     const val PRICE = "price"
-
-    const val BUS_FIRST = "first"
-    const val BUS_SECOND = "second"
 
     const val METHOD = "method"
     const val TITLE = "title"

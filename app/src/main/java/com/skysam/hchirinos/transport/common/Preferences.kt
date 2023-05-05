@@ -20,6 +20,7 @@ object Preferences {
         Constants.PREFERENCES, Context.MODE_PRIVATE)
 
     private val PREFERENCE_NOTIFICATION = booleanPreferencesKey(Constants.PREFERENCES_NOTIFICATION)
+    private val PREFERENCE_ASSEMBLY = booleanPreferencesKey(Constants.PREFERENCES_ASSEMBLY)
 
     fun getNotificationStatus(): Flow<Boolean> {
         return Transport.Transport.getContext().dataStore.data
@@ -28,9 +29,22 @@ object Preferences {
             }
     }
 
+    fun getAssemblyStatus(): Flow<Boolean> {
+        return Transport.Transport.getContext().dataStore.data
+            .map {
+                it[PREFERENCE_ASSEMBLY] ?: false
+            }
+    }
+
     suspend fun changeNotificationStatus(status: Boolean) {
         Transport.Transport.getContext().dataStore.edit {
             it[PREFERENCE_NOTIFICATION] = status
+        }
+    }
+
+    suspend fun changeAssemblyStatus(status: Boolean) {
+        Transport.Transport.getContext().dataStore.edit {
+            it[PREFERENCE_ASSEMBLY] = status
         }
     }
 

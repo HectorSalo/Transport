@@ -86,7 +86,8 @@ object Bookings {
                             booking.getDouble(Constants.QUANTITY)!!.toInt(),
                             booking.getDate(Constants.DATE)!!,
                             payments,
-                            refunds
+                            refunds,
+                            booking.getDouble(Constants.DAYS)!!.toInt()
                         )
                         bookings.add(bookingNew)
                     }
@@ -102,7 +103,8 @@ object Bookings {
             Constants.DATE to booking.date,
             Constants.QUANTITY to booking.quantity,
             Constants.PAYMENTS to booking.payments,
-            Constants.REFUNDS to booking.refunds
+            Constants.REFUNDS to booking.refunds,
+            Constants.DAYS to booking.days
         )
         getInstance().add(data)
     }
@@ -113,7 +115,8 @@ object Bookings {
             Constants.DATE to booking.date,
             Constants.QUANTITY to booking.quantity,
             Constants.PAYMENTS to booking.payments,
-            Constants.REFUNDS to booking.refunds
+            Constants.REFUNDS to booking.refunds,
+            Constants.DAYS to booking.days
         )
         getInstance()
             .document(booking.id)

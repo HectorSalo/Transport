@@ -70,10 +70,11 @@
     <string name="text_total_amount_debt">Total deuda ($) %1$s</string>
     <string name="text_total_amount_refund_pending">Vuelto pendiente ($) %1$s</string>
     <string name="text_total_amount_refund">Vuelto entregado ($) %1$s</string>
-
-    <!--Travel -->
-    <string name="text_bus_first">Ruta Washington</string>>
-    <string name="text_bus_second">Ruta Madariaga</string>
+    <string name="text_1">1</string>
+    <string name="text_2">2</string>
+    <string name="text_3">3</string>
+    <string name="text_days_assembly">Días de asamblea reservados</string>
+    <string name="text_days_assembly_view">Días de asamblea reservados: %1$s</string>
 
     <!--Settings -->
     <string name="text_about">Información de la App</string>>
@@ -89,5 +90,11 @@
     <string name="notification_title_off">Notificaciones apagadas</string>
     <string name="notification_received_title">¡Pago realizado!</string>
     <string name="notification_received_message">%1$s acaba de pagar $ %2$s</string>
+
+    <!-- Assembly Preferences -->
+    <string name="assembly_key">assembly</string>
+    <string name="assembly_header">Configuración para Asamblea Regional</string>
+    <string name="assembly_title">Transporte para Regional activa</string>
+    <string name="assembly_title_off">Transporte para Regional apagada</string>
 
 </resources>

@@ -44,8 +44,8 @@ object Classes {
   return list
  }
 
- fun getTotalBooking(quantity: Int): Double {
-  return Preferences.getPriceSeat() * quantity
+ fun getTotalBooking(booking: Booking): Double {
+  return Preferences.getPriceSeat() * booking.quantity * booking.days
  }
 
  fun totalPayments(payments: MutableList<Payment>): Double {

@@ -97,6 +97,7 @@ class ViewDetailsDialog: DialogFragment(), OnClick {
                 binding.tvName.text = booking.name
                 binding.tvQuantity.text = getString(R.string.text_quantity_seats_item, booking.quantity.toString())
                 binding.tvDate.text = Classes.convertDateToString(booking.date)
+                binding.tvDays.text = getString(R.string.text_days_assembly_view, booking.days.toString())
 
                 if (payments.isEmpty()) {
                     binding.rvPayments.visibility = View.GONE
@@ -109,10 +110,20 @@ class ViewDetailsDialog: DialogFragment(), OnClick {
                 calculate()
             }
         }
+
+        viewModel.assemblyActive.observe(viewLifecycleOwner) {
+            if (_binding != null) {
+                if (it) {
+                    binding.tvDays.visibility = View.VISIBLE
+                } else {
+                    binding.tvDays.visibility = View.GONE
+                }
+            }
+        }
     }
 
     private fun calculate() {
-        val diff = Classes.getTotalBooking(booking.quantity) + Classes.totalRefunds(booking.refunds) -
+        val diff = Classes.getTotalBooking(booking) + Classes.totalRefunds(booking.refunds) -
                 Classes.totalPayments(payments)
         if (diff == 0.0) binding.tvDebt.visibility = View.GONE
         if (diff > 0.0) binding.tvDebt.text = getString(R.string.text_total_amount_debt,

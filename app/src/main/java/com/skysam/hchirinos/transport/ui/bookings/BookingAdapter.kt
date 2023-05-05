@@ -34,7 +34,7 @@ class BookingAdapter(private var bookings: MutableList<Booking>, private val onC
         holder.quantity.text = context.getString(R.string.text_quantity_seats_item,
             item.quantity.toString())
 
-        val diff = Classes.getTotalBooking(item.quantity) + Classes.totalRefunds(item.refunds) -
+        val diff = Classes.getTotalBooking(item) + Classes.totalRefunds(item.refunds) -
                 Classes.totalPayments(item.payments)
         if (diff == 0.0) holder.image.setImageResource(R.drawable.ic_paid_24)
         if (diff > 0.0) holder.image.setImageResource(R.drawable.ic_debt_24)

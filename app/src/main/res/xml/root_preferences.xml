@@ -17,6 +17,16 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory app:title="@string/assembly_header">
+
+        <SwitchPreferenceCompat
+            app:key="@string/assembly_key"
+            app:title="@string/assembly_title"
+            app:defaultValue="false"
+            app:icon="@drawable/ic_assembly_off_24"/>
+
+    </PreferenceCategory>
+
     <PreferenceCategory app:title="@string/text_about">
 
         <PreferenceScreen

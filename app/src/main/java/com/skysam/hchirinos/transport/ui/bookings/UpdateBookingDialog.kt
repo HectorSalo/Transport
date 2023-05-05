@@ -42,7 +42,6 @@ class UpdateBookingDialog: DialogFragment(), OnClick,
     private val paymentsToSee = mutableListOf<Payment>()
     private val refunds = mutableListOf<Refund>()
     private var seePayments = true
-    private var quantity = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,7 +71,7 @@ class UpdateBookingDialog: DialogFragment(), OnClick,
         binding.etQuantity.doAfterTextChanged {
             binding.tfQuantity.error = null
             if (binding.etQuantity.text.toString().isNotEmpty()) {
-                quantity = binding.etQuantity.text.toString().toInt()
+                booking.quantity = binding.etQuantity.text.toString().toInt()
                 calculate()
             }
         }
@@ -94,6 +93,16 @@ class UpdateBookingDialog: DialogFragment(), OnClick,
             changeAdapter()
         }
 
+        binding.rgAssembly.setOnCheckedChangeListener {_, id ->
+            booking.days = when(id) {
+                R.id.rb_1 -> 1
+                R.id.rb_2 -> 2
+                R.id.rb_3 -> 3
+                else -> 1
+            }
+            calculate()
+        }
+
         binding.etDate.setOnClickListener { selecDate() }
         binding.btnExit.setOnClickListener { getOut() }
         binding.btnSave.setOnClickListener { validateData() }
@@ -110,11 +119,17 @@ class UpdateBookingDialog: DialogFragment(), OnClick,
         viewModel.bookingToView.observe(viewLifecycleOwner) {
             if (_binding != null) {
                 booking = it
-                quantity = booking.quantity
                 binding.etName.setText(booking.name)
                 dateSelected = booking.date
                 binding.etDate.setText(DateFormat.getDateInstance().format(dateSelected))
                 binding.etQuantity.setText(booking.quantity.toString())
+
+                when(booking.days) {
+                    1 -> binding.rb1.isChecked = true
+                    2 -> binding.rb2.isChecked = true
+                    3 -> binding.rb3.isChecked = true
+                }
+
                 payments.clear()
                 payments.addAll(booking.payments)
                 refunds.clear()
@@ -131,6 +146,18 @@ class UpdateBookingDialog: DialogFragment(), OnClick,
                 calculate()
             }
         }
+
+        viewModel.assemblyActive.observe(viewLifecycleOwner) {
+            if (_binding != null) {
+                if (it) {
+                    binding.textView1.visibility = View.VISIBLE
+                    binding.rgAssembly.visibility = View.VISIBLE
+                } else {
+                    binding.textView1.visibility = View.GONE
+                    binding.rgAssembly.visibility = View.GONE
+                }
+            }
+        }
     }
 
     private fun calculatePaid() {
@@ -139,7 +166,7 @@ class UpdateBookingDialog: DialogFragment(), OnClick,
     }
 
     private fun calculate() {
-        val diff = Classes.getTotalBooking(quantity) + Classes.totalRefunds(refunds) -
+        val diff = Classes.getTotalBooking(booking) + Classes.totalRefunds(refunds) -
                 Classes.totalPayments(payments)
         if (diff == 0.0) binding.tvDebt.visibility = View.GONE
         if (diff > 0.0) binding.tvDebt.text = getString(R.string.text_total_amount_debt,
@@ -219,16 +246,17 @@ class UpdateBookingDialog: DialogFragment(), OnClick,
             return
         }
 
-        val booking = Booking(
+        val bookingUpdated = Booking(
             booking.id,
             name,
             quantityS.toInt(),
             dateSelected,
             payments,
-            refunds
+            refunds,
+            booking.days
         )
 
-        viewModel.updateBooking(booking)
+        viewModel.updateBooking(bookingUpdated)
         dismiss()
     }
 

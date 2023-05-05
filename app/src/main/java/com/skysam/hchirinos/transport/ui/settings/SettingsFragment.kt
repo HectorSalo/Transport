@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 class SettingsFragment : PreferenceFragmentCompat() {
     private val viewModel: SettingsViewModel by activityViewModels()
     private lateinit var switchNotification: SwitchPreferenceCompat
-    private var statusNotification = true
+    private lateinit var switchAssembly: SwitchPreferenceCompat
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
@@ -28,11 +28,20 @@ class SettingsFragment : PreferenceFragmentCompat() {
         super.onViewCreated(view, savedInstanceState)
 
         switchNotification = findPreference(getString(R.string.notification_key))!!
+        switchAssembly = findPreference(getString(R.string.assembly_key))!!
 
         switchNotification.setOnPreferenceChangeListener { _, newValue ->
             val isOn = newValue as Boolean
             lifecycleScope.launch {
                 viewModel.changeNotificationStatus(isOn)
+            }
+            true
+        }
+
+        switchAssembly.setOnPreferenceChangeListener { _, newValue ->
+            val isOn = newValue as Boolean
+            lifecycleScope.launch {
+                viewModel.changeAssemblyStatus(isOn)
             }
             true
         }
@@ -51,12 +60,19 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     private fun loadViewModels() {
         viewModel.notificationActive.observe(viewLifecycleOwner) {
-            statusNotification = it
             switchNotification.isChecked = it
             val icon = if (it) R.drawable.ic_notifications_active_24 else R.drawable.ic_notifications_off_24
             switchNotification.setIcon(icon)
             switchNotification.title = if (it) getString(R.string.notification_title)
             else getString(R.string.notification_title_off)
+        }
+
+        viewModel.assemblyActive.observe(viewLifecycleOwner) {
+            switchAssembly.isChecked = it
+            val icon = if (it) R.drawable.ic_assembly_on_24 else R.drawable.ic_assembly_off_24
+            switchAssembly.setIcon(icon)
+            switchAssembly.title = if (it) getString(R.string.assembly_title)
+            else getString(R.string.assembly_title_off)
         }
     }
 
