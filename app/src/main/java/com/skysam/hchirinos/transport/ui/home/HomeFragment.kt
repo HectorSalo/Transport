@@ -1,6 +1,7 @@
 package com.skysam.hchirinos.transport.ui.home
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -36,7 +37,15 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.button.setOnClickListener { startActivity(Intent(requireContext(), NewBookingActivity::class.java)) }
+        binding.button.setOnClickListener {
+            startActivity(Intent(requireContext(), NewBookingActivity::class.java))
+            /*val intent = Intent(Intent.ACTION_VIEW).apply {
+                data = Uri.parse(
+                    "https://play.google.com/store/apps/details?id=com.skysam.hchirinos.transport")
+                setPackage("com.android.vending")
+            }
+            requireActivity().startActivity(intent)*/
+        }
 
         loadViewModel()
     }
