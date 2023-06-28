@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.PopupMenu
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.skysam.hchirinos.transport.R
@@ -17,9 +18,10 @@ import com.skysam.hchirinos.transport.dataClasses.Booking
  * Created by Hector Chirinos on 01/12/2022.
  */
 
-class BookingAdapter(private var bookings: MutableList<Booking>, private val onClick: OnClick):
+class BookingAdapter(private val onClick: OnClick):
     RecyclerView.Adapter<BookingAdapter.ViewHolder>() {
     lateinit var context: Context
+    private var bookings = listOf<Booking>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookingAdapter.ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -34,7 +36,7 @@ class BookingAdapter(private var bookings: MutableList<Booking>, private val onC
         holder.quantity.text = context.getString(R.string.text_quantity_seats_item,
             item.quantity.toString())
 
-        val diff = Classes.getTotalBooking(item) + Classes.totalRefunds(item.refunds) -
+        val diff = Classes.getTotalBooking(item.quantity) + Classes.totalRefunds(item.refunds) -
                 Classes.totalPayments(item.payments)
         if (diff == 0.0) holder.image.setImageResource(R.drawable.ic_paid_24)
         if (diff > 0.0) holder.image.setImageResource(R.drawable.ic_debt_24)
@@ -79,8 +81,10 @@ class BookingAdapter(private var bookings: MutableList<Booking>, private val onC
         val card: MaterialCardView = view.findViewById(R.id.card)
     }
 
-    fun updateList(newList: MutableList<Booking>) {
+    fun updateList(newList: List<Booking>) {
+        val diffUtil = BookingDiffUtil(bookings, newList)
+        val result = DiffUtil.calculateDiff(diffUtil)
         bookings = newList
-        notifyDataSetChanged()
+        result.dispatchUpdatesTo(this)
     }
 }

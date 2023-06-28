@@ -22,8 +22,8 @@ class BookingFragment : Fragment(), OnClick, MenuProvider, SearchView.OnQueryTex
     private val binding get() = _binding!!
     private val viewModel: BookingViewModel by activityViewModels()
     private lateinit var bookingAdapter: BookingAdapter
-    private val bookings = mutableListOf<Booking>()
-    private val listSearch = mutableListOf<Booking>()
+    private var bookings = listOf<Booking>()
+    private var listSearch = listOf<Booking>()
     private lateinit var wrapLayoutManager: WrapLayoutManager
 
     override fun onCreateView(
@@ -38,7 +38,7 @@ class BookingFragment : Fragment(), OnClick, MenuProvider, SearchView.OnQueryTex
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        bookingAdapter = BookingAdapter(bookings, this)
+        bookingAdapter = BookingAdapter(this)
         wrapLayoutManager = WrapLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         binding.rvBookings.apply {
             setHasFixedSize(true)
@@ -62,7 +62,11 @@ class BookingFragment : Fragment(), OnClick, MenuProvider, SearchView.OnQueryTex
                     binding.tvListEmpty.visibility = View.VISIBLE
                     binding.rvBookings.visibility = View.GONE
                 } else {
-                    if (listSearch.isEmpty()) {
+                    bookings = it
+                    bookingAdapter.updateList(bookings)
+                    binding.tvListEmpty.visibility = View.GONE
+                    binding.rvBookings.visibility = View.VISIBLE
+                    /*if (listSearch.isEmpty()) {
                         val listTemp = mutableListOf<Booking>()
                         for (item in bookings) {
                             listTemp.add(item)
@@ -96,7 +100,7 @@ class BookingFragment : Fragment(), OnClick, MenuProvider, SearchView.OnQueryTex
                         }
                         if (!exists) listSearch.remove(bookingRemove)
                         bookingAdapter.updateList(listSearch)
-                    }
+                    }*/
                 }
             }
         }
@@ -191,7 +195,8 @@ class BookingFragment : Fragment(), OnClick, MenuProvider, SearchView.OnQueryTex
     override fun onQueryTextChange(newText: String?): Boolean {
         if (bookings.isNotEmpty()) {
             val userInput: String = newText!!.lowercase()
-            listSearch.clear()
+
+            val listSearch = mutableListOf<Booking>()
 
             if (userInput.isNotEmpty()) {
                 for (booking in bookings) {

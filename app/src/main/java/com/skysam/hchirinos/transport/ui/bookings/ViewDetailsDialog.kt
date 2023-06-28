@@ -123,7 +123,7 @@ class ViewDetailsDialog: DialogFragment(), OnClick {
     }
 
     private fun calculate() {
-        val diff = Classes.getTotalBooking(booking) + Classes.totalRefunds(booking.refunds) -
+        val diff = Classes.getTotalBooking(booking.quantity) + Classes.totalRefunds(booking.refunds) -
                 Classes.totalPayments(payments)
         if (diff == 0.0) binding.tvDebt.visibility = View.GONE
         if (diff > 0.0) binding.tvDebt.text = getString(R.string.text_total_amount_debt,

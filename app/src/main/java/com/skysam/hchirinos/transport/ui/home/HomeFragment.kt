@@ -110,7 +110,7 @@ class HomeFragment : Fragment() {
         if (bus != null) {
             var total = 0.0
             for (booking in bookings) {
-                val diff = Classes.getTotalBooking(booking) + Classes.totalRefunds(booking.refunds) -
+                val diff = Classes.getTotalBooking(booking.quantity) + Classes.totalRefunds(booking.refunds) -
                         Classes.totalPayments(booking.payments)
                 if (diff < 0.0) total += diff
             }
@@ -129,7 +129,7 @@ class HomeFragment : Fragment() {
         if (bus != null) {
             var totalPaid = 0
             for (booking in bookings) {
-                val diff = Classes.getTotalBooking(booking) -
+                val diff = Classes.getTotalBooking(booking.quantity) -
                         Classes.totalPayments(booking.payments)
                 if (diff <= 0) totalPaid += 1
             }
