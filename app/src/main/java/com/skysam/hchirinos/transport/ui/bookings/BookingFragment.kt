@@ -23,7 +23,6 @@ class BookingFragment : Fragment(), OnClick, MenuProvider, SearchView.OnQueryTex
     private val viewModel: BookingViewModel by activityViewModels()
     private lateinit var bookingAdapter: BookingAdapter
     private var bookings = listOf<Booking>()
-    private var listSearch = listOf<Booking>()
     private lateinit var wrapLayoutManager: WrapLayoutManager
 
     override fun onCreateView(
@@ -57,7 +56,7 @@ class BookingFragment : Fragment(), OnClick, MenuProvider, SearchView.OnQueryTex
     private fun loadViewModel() {
         viewModel.bookings.observe(viewLifecycleOwner) {
             if (_binding != null) {
-               /* binding.progressBar.visibility = View.GONE
+               binding.progressBar.visibility = View.GONE
                 if (it.isNotEmpty()) {
                     bookings = it
                     bookingAdapter.updateList(bookings)
@@ -66,97 +65,12 @@ class BookingFragment : Fragment(), OnClick, MenuProvider, SearchView.OnQueryTex
                 } else {
                     binding.tvListEmpty.visibility = View.VISIBLE
                     binding.rvBookings.visibility = View.GONE
-                }*/
-                bookings = it
-                viewModel.filter("", it)
-
-                if (it.isEmpty()) {
-
-                } else {
-
-                    /*if (listSearch.isEmpty()) {
-                        val listTemp = mutableListOf<Booking>()
-                        for (item in bookings) {
-                            listTemp.add(item)
-                        }
-                        bookings.clear()
-                        bookings.addAll(it)
-
-                        if (listTemp.size == bookings.size) updateItem(listTemp)
-                        if (listTemp.size < bookings.size) addItem(listTemp)
-                        if (listTemp.size > bookings.size) deleteItem(listTemp)
-
-                        binding.tvListEmpty.visibility = View.GONE
-                        binding.rvBookings.visibility = View.VISIBLE
-                    } else {
-                        bookings.clear()
-                        bookings.addAll(it)
-                        for (book in it) {
-                            for (bookSearch in listSearch) {
-                                if (book.id == bookSearch.id && book != bookSearch) {
-                                    listSearch[listSearch.indexOf(bookSearch)] = book
-                                }
-                            }
-                        }
-                        var exists = true
-                        var bookingRemove: Booking? = null
-                        for (bookSearch in listSearch) {
-                            if (!it.contains(bookSearch)) {
-                                exists = false
-                                bookingRemove = bookSearch
-                            }
-                        }
-                        if (!exists) listSearch.remove(bookingRemove)
-                        bookingAdapter.updateList(listSearch)
-                    }*/
                 }
             }
         }
-        viewModel.bookingsFiltred.observe(viewLifecycleOwner) {
-            if (_binding != null) {
-                binding.progressBar.visibility = View.GONE
-                if (it.isNotEmpty()) {
-                    bookingAdapter.updateList(it)
-                    binding.tvListEmpty.visibility = View.GONE
-                    binding.rvBookings.visibility = View.VISIBLE
-                } else {
-                    binding.tvListEmpty.visibility = View.VISIBLE
-                    binding.rvBookings.visibility = View.GONE
-                }
-            }
-        }
+
     }
 
-    private fun deleteItem(listTemp: MutableList<Booking>) {
-        for (itemTemp in listTemp) {
-            if (!bookings.contains(itemTemp)) {
-                bookingAdapter.notifyItemRemoved(listTemp.indexOf(itemTemp))
-            }
-        }
-    }
-
-    private fun addItem(listTemp: MutableList<Booking>) {
-        if (listTemp.isEmpty()) {
-            bookingAdapter.notifyItemRangeInserted(0, bookings.size)
-            return
-        }
-        for (itemBook in bookings) {
-            if (!listTemp.contains(itemBook)) {
-                bookingAdapter.notifyItemInserted(bookings.indexOf(itemBook))
-            }
-        }
-    }
-
-    private fun updateItem(listTemp: MutableList<Booking>) {
-        for (itemTemp in listTemp) {
-            for (itemBook in bookings){
-                if (itemTemp.id == itemBook.id && itemTemp != itemBook) {
-                    bookingAdapter.notifyItemChanged(bookings.indexOf(itemBook))
-                    break
-                }
-            }
-        }
-    }
 
     override fun view(booking: Booking) {
         viewModel.viewBooking(booking)
@@ -217,23 +131,23 @@ class BookingFragment : Fragment(), OnClick, MenuProvider, SearchView.OnQueryTex
         if (bookings.isNotEmpty()) {
             val userInput: String = newText!!.lowercase()
 
-            val listSearch = mutableListOf<Booking>()
+            val list = mutableListOf<Booking>()
 
             if (userInput.isNotEmpty()) {
                 for (booking in bookings) {
                     if (booking.name.lowercase().contains(userInput)) {
-                        listSearch.add(booking)
+                        list.add(booking)
                     }
                 }
-                if (listSearch.isEmpty()) {
+                if (list.isEmpty()) {
                     binding.lottieAnimationView.visibility = View.VISIBLE
                     binding.lottieAnimationView.playAnimation()
                 } else {
                     binding.lottieAnimationView.visibility = View.GONE
                 }
-                //bookingAdapter.updateList(listSearch)
+                bookingAdapter.updateList(list)
             } else {
-                //bookingAdapter.updateList(bookings)
+                bookingAdapter.updateList(bookings)
                 binding.lottieAnimationView.visibility = View.GONE
             }
         }

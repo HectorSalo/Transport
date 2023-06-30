@@ -9,35 +9,13 @@ import com.skysam.hchirinos.transport.dataClasses.Booking
 import com.skysam.hchirinos.transport.dataClasses.Payment
 import com.skysam.hchirinos.transport.dataClasses.Refund
 import com.skysam.hchirinos.transport.repositories.Bookings
-import java.util.Locale
 
 class BookingViewModel : ViewModel() {
     val bookings: LiveData<MutableList<Booking>> = Bookings.getBookings().asLiveData()
     val assemblyActive: LiveData<Boolean> = Preferences.getAssemblyStatus().asLiveData()
 
-    private val _bookingsFiltred = MutableLiveData<MutableList<Booking>>().apply {
-        value = mutableListOf()
-    }
-    val bookingsFiltred: LiveData<MutableList<Booking>> get() = _bookingsFiltred
-
     private val _bookingToView = MutableLiveData<Booking>()
     val bookingToView: LiveData<Booking> get() = _bookingToView
-
-    fun filter(text: String, allContacts: List<Booking>) {
-        _bookingsFiltred.value?.clear()
-        // looping through existing names
-        if(text.isNotEmpty()){
-            for (contact in allContacts) {
-                if (contact.name.lowercase(Locale.ROOT).contains(text.lowercase(
-                        Locale.ROOT))) {
-                    _bookingsFiltred.value?.add(contact)
-                }
-            }
-        } else {
-            _bookingsFiltred.value?.addAll(allContacts)
-        }
-        _bookingsFiltred.value = _bookingsFiltred.value
-    }
 
     fun addBooking(booking: Booking) {
         Bookings.addBooking(booking)
