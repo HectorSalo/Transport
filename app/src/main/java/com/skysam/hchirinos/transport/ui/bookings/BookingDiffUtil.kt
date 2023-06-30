@@ -18,7 +18,6 @@ class BookingDiffUtil(private val oldList: List<Booking>, private val newList: L
  }
 
  override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-  //return newList.contains(oldList[oldItemPosition])
-  return true
+  return newList.contains(oldList[oldItemPosition])
  }
 }

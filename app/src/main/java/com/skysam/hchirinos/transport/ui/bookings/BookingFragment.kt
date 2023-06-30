@@ -57,15 +57,23 @@ class BookingFragment : Fragment(), OnClick, MenuProvider, SearchView.OnQueryTex
     private fun loadViewModel() {
         viewModel.bookings.observe(viewLifecycleOwner) {
             if (_binding != null) {
-                binding.progressBar.visibility = View.GONE
-                if (it.isEmpty()) {
-                    binding.tvListEmpty.visibility = View.VISIBLE
-                    binding.rvBookings.visibility = View.GONE
-                } else {
+               /* binding.progressBar.visibility = View.GONE
+                if (it.isNotEmpty()) {
                     bookings = it
                     bookingAdapter.updateList(bookings)
                     binding.tvListEmpty.visibility = View.GONE
                     binding.rvBookings.visibility = View.VISIBLE
+                } else {
+                    binding.tvListEmpty.visibility = View.VISIBLE
+                    binding.rvBookings.visibility = View.GONE
+                }*/
+                bookings = it
+                viewModel.filter("", it)
+
+                if (it.isEmpty()) {
+
+                } else {
+
                     /*if (listSearch.isEmpty()) {
                         val listTemp = mutableListOf<Booking>()
                         for (item in bookings) {
@@ -101,6 +109,19 @@ class BookingFragment : Fragment(), OnClick, MenuProvider, SearchView.OnQueryTex
                         if (!exists) listSearch.remove(bookingRemove)
                         bookingAdapter.updateList(listSearch)
                     }*/
+                }
+            }
+        }
+        viewModel.bookingsFiltred.observe(viewLifecycleOwner) {
+            if (_binding != null) {
+                binding.progressBar.visibility = View.GONE
+                if (it.isNotEmpty()) {
+                    bookingAdapter.updateList(it)
+                    binding.tvListEmpty.visibility = View.GONE
+                    binding.rvBookings.visibility = View.VISIBLE
+                } else {
+                    binding.tvListEmpty.visibility = View.VISIBLE
+                    binding.rvBookings.visibility = View.GONE
                 }
             }
         }
@@ -210,9 +231,9 @@ class BookingFragment : Fragment(), OnClick, MenuProvider, SearchView.OnQueryTex
                 } else {
                     binding.lottieAnimationView.visibility = View.GONE
                 }
-                bookingAdapter.updateList(listSearch)
+                //bookingAdapter.updateList(listSearch)
             } else {
-                bookingAdapter.updateList(bookings)
+                //bookingAdapter.updateList(bookings)
                 binding.lottieAnimationView.visibility = View.GONE
             }
         }
