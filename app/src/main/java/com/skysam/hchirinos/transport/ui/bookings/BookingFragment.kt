@@ -9,7 +9,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.card.MaterialCardView
 import com.skysam.hchirinos.transport.R
+import com.skysam.hchirinos.transport.common.Classes
 import com.skysam.hchirinos.transport.dataClasses.Booking
 import com.skysam.hchirinos.transport.databinding.FragmentBookingBinding
 import com.skysam.hchirinos.transport.ui.common.WrapLayoutManager
@@ -119,6 +122,10 @@ class BookingFragment : Fragment(), OnClick, MenuProvider, SearchView.OnQueryTex
     override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
         return when(menuItem.itemId) {
             R.id.app_bar_search -> true
+            R.id.app_bar_filter -> {
+                filter()
+                true
+            }
             else -> false
         }
     }
@@ -152,5 +159,42 @@ class BookingFragment : Fragment(), OnClick, MenuProvider, SearchView.OnQueryTex
             }
         }
         return true
+    }
+
+    private fun filter() {
+        val bottomSheetDialog = BottomSheetDialog(requireContext())
+        bottomSheetDialog.setContentView(R.layout.layout_options_filter_bookings)
+        bottomSheetDialog.dismissWithAnimation = true
+        bottomSheetDialog.show()
+        val viewSheet: View? = bottomSheetDialog.findViewById(com.google.android.material.R.id.design_bottom_sheet)
+
+        val btnPaids: MaterialCardView = viewSheet!!.findViewById(R.id.card_paids)
+        val btnNotPaids: MaterialCardView = viewSheet.findViewById(R.id.card_not_paids)
+        val btnAll: MaterialCardView = viewSheet.findViewById(R.id.card_all)
+
+        btnPaids.setOnClickListener {
+            bottomSheetDialog.hide()
+            doFilter(true)
+        }
+        btnNotPaids.setOnClickListener {
+            bottomSheetDialog.hide()
+            doFilter(false)
+        }
+        btnAll.setOnClickListener {
+            bottomSheetDialog.hide()
+            val list: List<Booking> = bookings
+            bookingAdapter.updateList(list)
+        }
+    }
+
+    private fun doFilter(paids: Boolean) {
+        val list = mutableListOf<Booking>()
+        bookings.forEach {
+            val diff = Classes.getTotalBooking(it.quantity) + Classes.totalRefunds(it.refunds) -
+                    Classes.totalPayments(it.payments)
+            if (diff <= 0.0 && paids) list.add(it)
+            if (diff > 0.0 && !paids) list.add(it)
+        }
+        bookingAdapter.updateList(list)
     }
 }

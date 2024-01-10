@@ -5,4 +5,5 @@
     <dimen name="fab_margin">16dp</dimen>
 
     <dimen name="dimen_button_pin">72dp</dimen>
+    <dimen name="dimen_button_sheet">64dp</dimen>
 </resources>

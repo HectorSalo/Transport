@@ -32,6 +32,7 @@
     <string name="text_not_define">Sin definir</string>
     <string name="text_bookings_paids">Pagadas</string>
     <string name="text_bookings_remainig">Por cobrar</string>
+    <string name="text_all">Todas</string>
 
     <!--Init-->
     <string name="text_type_pin">Ingrese Pin</string>

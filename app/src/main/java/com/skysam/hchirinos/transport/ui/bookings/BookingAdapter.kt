@@ -84,7 +84,6 @@ class BookingAdapter(private val onClick: OnClick):
     fun updateList(newList: List<Booking>) {
         val diffUtil = BookingDiffUtil(bookings, newList)
         val result = DiffUtil.calculateDiff(diffUtil)
-        val test = bookings
         bookings = newList
         result.dispatchUpdatesTo(this)
     }
