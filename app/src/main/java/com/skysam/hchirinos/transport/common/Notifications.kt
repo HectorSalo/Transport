@@ -11,7 +11,7 @@ import org.json.JSONObject
  */
 
 object Notifications {
-    const val NOTIFICATION_API = "https://skysam.000webhostapp.com/transport/transport_RS.php"
+    const val NOTIFICATION_API = "https://skysam1.000webhostapp.com/transport/transport_RS.php"
     private const val SEND_NOTIFICATION = "sendNotification"
 
     val PATH_NOTIFICATION = when(Classes.getEnviroment()) {

@@ -91,6 +91,7 @@
     <string name="notification_title_off">Notificaciones apagadas</string>
     <string name="notification_received_title">¡Pago realizado!</string>
     <string name="notification_received_message">%1$s acaba de pagar $ %2$s</string>
+    <string name="error_permission_notification">Error en permisos de notificación</string>
 
     <!-- Assembly Preferences -->
     <string name="assembly_key">assembly</string>
