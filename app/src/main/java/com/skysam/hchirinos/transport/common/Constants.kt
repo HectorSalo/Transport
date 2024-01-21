@@ -41,4 +41,8 @@ object Constants {
     const val SUCCESS = "success"
     const val SEND_NOTIFICATION_SUCCESS = 3
     const val ERROR_METHOD_NOT_EXIST = 104
+
+    const val INFO_APP = "infoApp"
+    const val VERSION_CODE = "versionCode"
+    const val VERSION_NAME = "versionName"
 }

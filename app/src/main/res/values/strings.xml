@@ -19,6 +19,7 @@
     <string name="title_confirmation_dialog">Confirmar</string>
     <string name="msg_exit_dialog">Se perderá toda la información.\n¿Desea salir?</string>
     <string name="msg_delete_dialog">¿Desea eliminar esta información?</string>
+    <string name="text_update">Actualizar</string>
 
 
     <!-- Home -->
@@ -98,5 +99,9 @@
     <string name="assembly_header">Configuración para Asamblea Regional</string>
     <string name="assembly_title">Transporte para Regional activa</string>
     <string name="assembly_title_off">Transporte para Regional apagada</string>
+
+    <!-- InfoApp -->
+    <string name="info_app">infoReleaseTransport</string>
+    <string name="msg_update">Ya se encuentra disponible una nueva versión. Debes descargarla para seguir disfrutando de la aplicación.</string>
 
 </resources>

@@ -8,6 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.button.MaterialButton
+import com.skysam.hchirinos.transport.BuildConfig
 import com.skysam.hchirinos.transport.R
 import com.skysam.hchirinos.transport.common.Classes
 import com.skysam.hchirinos.transport.dataClasses.Booking
@@ -56,6 +59,13 @@ class HomeFragment : Fragment() {
     }
 
     private fun loadViewModel() {
+        viewModel.infoApp.observe(viewLifecycleOwner) {
+            if (_binding != null) {
+                if (it.versionCode > BuildConfig.VERSION_CODE) {
+                    showSheetUpdate()
+                }
+            }
+        }
         viewModel.bookings.observe(viewLifecycleOwner) {
             if (_binding != null) {
                 bookings.clear()
@@ -135,6 +145,22 @@ class HomeFragment : Fragment() {
             }
             binding.tvBookingsPaid.text = totalPaid.toString()
             binding.tvBookingsRemaning.text = (bookings.size - totalPaid).toString()
+        }
+    }
+
+    private fun showSheetUpdate() {
+        val bottomSheetDialog = BottomSheetDialog(requireContext())
+        bottomSheetDialog.setContentView(R.layout.layout_sheet_update)
+        bottomSheetDialog.dismissWithAnimation = true
+        bottomSheetDialog.setCancelable(false)
+        bottomSheetDialog.show()
+        val viewSheet: View? = bottomSheetDialog.findViewById(com.google.android.material.R.id.design_bottom_sheet)
+        val btnNotification: MaterialButton = viewSheet!!.findViewById(R.id.btn_update)
+        btnNotification.setOnClickListener {
+            val appPackageName = requireContext().packageName
+            val url = "https://play.google.com/store/apps/details?id=$appPackageName"
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+            requireActivity().finishAffinity()
         }
     }
 }
