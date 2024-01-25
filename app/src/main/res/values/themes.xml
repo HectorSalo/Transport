@@ -36,6 +36,13 @@
         <item name="android:textColor">@color/yellow_base_dark</item>
     </style>
 
+    <style name="SpecificCornerRounded">
+        <item name="cornerSizeBottomRight">32dp</item>
+        <item name="cornerFamilyBottomRight">rounded</item>
+        <item name="cornerSizeBottomLeft">32dp</item>
+        <item name="cornerFamilyBottomLeft">rounded</item>
+    </style>
+
     <style name="Theme.Transport.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -44,4 +51,19 @@
     <style name="Theme.Transport.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.Transport.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <!-- Style for the M3 Bottom Sheet. -->
+    <style name="Widget.Material3.BottomSheet" parent="Widget.MaterialComponents.BottomSheet">
+        <item name="android:elevation" tools:ignore="NewApi">8dp</item>
+        <item name="marginLeftSystemWindowInsets">true</item>
+        <item name="marginRightSystemWindowInsets">true</item>
+        <item name="paddingBottomSystemWindowInsets">true</item>
+        <item name="paddingTopSystemWindowInsets">true</item>
+        <item name="paddingLeftSystemWindowInsets">false</item>
+        <item name="paddingRightSystemWindowInsets">false</item>
+        <item name="shapeAppearance">@macro/m3_comp_sheet_bottom_docked_container_shape</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Material3.Corner.Top</item>
+        <item name="shouldRemoveExpandedCorners">false</item>
+        <item name="backgroundTint">@macro/m3_comp_sheet_bottom_docked_container_color</item>
+    </style>
 </resources>

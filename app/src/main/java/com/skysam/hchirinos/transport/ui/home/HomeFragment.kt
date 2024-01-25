@@ -6,8 +6,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.bumptech.glide.Glide
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
 import com.skysam.hchirinos.transport.BuildConfig
@@ -17,6 +20,7 @@ import com.skysam.hchirinos.transport.dataClasses.Booking
 import com.skysam.hchirinos.transport.dataClasses.Bus
 import com.skysam.hchirinos.transport.databinding.FragmentHomeBinding
 import com.skysam.hchirinos.transport.ui.bookings.newBooking.NewBookingActivity
+import java.util.Date
 
 class HomeFragment : Fragment() {
 
@@ -24,7 +28,9 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: HomeViewModel by activityViewModels()
     private val bookings = mutableListOf<Booking>()
+    private lateinit var today: Date
     private var bus: Bus? = null
+    private lateinit var sheetView: View
     private var seatsReserved = 0
     private var totalPaid = 0.0
     private var totalRefunds = 0.0
@@ -42,13 +48,8 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.button.setOnClickListener {
             startActivity(Intent(requireContext(), NewBookingActivity::class.java))
-            /*val intent = Intent(Intent.ACTION_VIEW).apply {
-                data = Uri.parse(
-                    "https://play.google.com/store/apps/details?id=com.skysam.hchirinos.transport")
-                setPackage("com.android.vending")
-            }
-            requireActivity().startActivity(intent)*/
         }
+        today = Date()
 
         loadViewModel()
     }
@@ -66,7 +67,17 @@ class HomeFragment : Fragment() {
                 }
             }
         }
-        viewModel.bookings.observe(viewLifecycleOwner) {
+        viewModel.event.observe(viewLifecycleOwner) {
+            if (_binding != null) {
+                Glide.with(requireContext())
+                    .load(it.image)
+                    .placeholder(R.drawable.logo)
+                    .into(binding.ivEvent)
+                binding.tvTitleEvent.text = it.title
+                calculateDates(it.date)
+            }
+        }
+        /*viewModel.bookings.observe(viewLifecycleOwner) {
             if (_binding != null) {
                 bookings.clear()
                 bookings.addAll(it)
@@ -87,20 +98,38 @@ class HomeFragment : Fragment() {
                 showRefunds()
                 showBookingsBalance()
             }
-        }
+        }*/
         viewModel.bus.observe(viewLifecycleOwner) {
             if (_binding != null) {
                 bus = it
-                showSeats()
+                /*showSeats()
                 showPaids()
                 showRefunds()
-                showBookingsBalance()
+                showBookingsBalance()*/
                 viewModel.changePriceSeat(bus!!)
+                sheet()
             }
         }
     }
 
-    private fun showSeats() {
+    private fun calculateDates(dateEvent: Date) {
+        if (dateEvent.before(today)) {
+            binding.tvDateEvent.visibility = View.GONE
+            return
+        }
+        val diffDays = (dateEvent.time - today.time) / 86400000
+
+        binding.tvDateEvent.text = getString(R.string.text_date_event, diffDays.toString())
+    }
+
+    private fun sheet() {
+        sheetView = binding.sheetInclude.bottomSheet
+        val bottomSheetBehavior: BottomSheetBehavior<*>?
+        bottomSheetBehavior = BottomSheetBehavior.from(sheetView)
+
+    }
+
+    /*private fun showSeats() {
         if (bus != null) {
             binding.tvAvailables.text = if (bus!!.quantity != 0) (bus!!.quantity - seatsReserved).toString()
             else getString(R.string.text_not_define)
@@ -146,7 +175,7 @@ class HomeFragment : Fragment() {
             binding.tvBookingsPaid.text = totalPaid.toString()
             binding.tvBookingsRemaning.text = (bookings.size - totalPaid).toString()
         }
-    }
+    }*/
 
     private fun showSheetUpdate() {
         val bottomSheetDialog = BottomSheetDialog(requireContext())

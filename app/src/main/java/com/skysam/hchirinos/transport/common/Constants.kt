@@ -34,6 +34,9 @@ object Constants {
     const val BUS = "bus"
     const val PRICE = "price"
 
+    const val EVENT = "event"
+    const val IMAGE = "image"
+
     const val METHOD = "method"
     const val TITLE = "title"
     const val MESSAGE = "message"
