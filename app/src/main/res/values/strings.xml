@@ -84,6 +84,7 @@
     <string name="title_sign_out">Cerrar sesión</string>
     <string name="message_sign_out">¿Desea cerrar la sesión actual?</string>
     <string name="title_profile">Personal</string>
+    <string name="text_share_app">Compartir aplicación</string>
 
     <!-- Notification Preferences -->
     <string name="notification_key">notification</string>

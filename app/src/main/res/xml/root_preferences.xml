@@ -31,6 +31,11 @@
     <PreferenceCategory app:title="@string/text_about">
 
         <PreferenceScreen
+            app:key="share_app"
+            app:title="@string/text_share_app"
+            app:icon="@drawable/ic_share_circle"/>
+
+        <PreferenceScreen
             app:key="name_version"/>
 
     </PreferenceCategory>

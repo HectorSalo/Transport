@@ -46,6 +46,20 @@ class SettingsFragment : PreferenceFragmentCompat() {
             true
         }
 
+        val sharePreferenceScreen = findPreference<PreferenceScreen>("share_app")!!
+        sharePreferenceScreen.setOnPreferenceClickListener {
+            val appPackageName = requireContext().packageName
+            val sendIntent = Intent()
+            sendIntent.action = Intent.ACTION_SEND
+            sendIntent.putExtra(
+                Intent.EXTRA_TEXT,
+                "https://play.google.com/store/apps/details?id=$appPackageName"
+            )
+            sendIntent.type = "text/plain"
+            startActivity(sendIntent)
+            true
+        }
+
         val versionPreferenceScreen = findPreference<PreferenceScreen>("name_version")
         versionPreferenceScreen?.title = getString(R.string.version_name, BuildConfig.VERSION_NAME)
 
