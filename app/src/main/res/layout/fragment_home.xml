@@ -46,7 +46,8 @@
             android:drawableLeft="@drawable/ic_add_notebook_24"
             android:text="@string/text_new_booking"
             android:textSize="24sp"
-            android:textStyle="italic" />
+            android:textStyle="italic"
+            android:layout_below="@id/tv_date_event"/>
 
     </RelativeLayout>
 
