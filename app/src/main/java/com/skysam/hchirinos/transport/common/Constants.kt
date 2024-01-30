@@ -36,6 +36,7 @@ object Constants {
 
     const val EVENT = "event"
     const val IMAGE = "image"
+    const val IS_REGIONAL = "isRegional"
 
     const val METHOD = "method"
     const val TITLE = "title"

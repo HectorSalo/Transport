@@ -105,6 +105,8 @@
     <string name="info_app">infoReleaseTransport</string>
     <string name="msg_update">Ya se encuentra disponible una nueva versión. Debes descargarla para seguir disfrutando de la aplicación.</string>
 
-    <string name="text_date_event">Faltan %1$s días para recaudar el dinero.</string>
+    <string name="text_convention_circuit">Asamblea de Circuito:</string>
+    <string name="text_convention_regional">Asamblea Regional:</string>
+    <string name="text_date_event">Faltan %1$s días</string>
 
 </resources>

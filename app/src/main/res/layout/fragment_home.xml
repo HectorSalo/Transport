@@ -15,40 +15,61 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="top"
-            app:shapeAppearanceOverlay="@style/SpecificCornerRounded"/>
+            app:shapeAppearanceOverlay="@style/SpecificCornerRounded"
+            android:alpha="0.3"/>
 
         <TextView
             android:id="@+id/tv_title_event"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="24dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_below="@id/iv_event"/>
+            android:layout_marginEnd="24dp"
+            android:layout_alignParentTop="true"
+            android:textSize="18sp"
+            android:textColor="@color/white"/>
+
+        <TextView
+            android:id="@+id/tv_title2_event"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_below="@id/tv_title_event"
+            android:textSize="24sp"
+            android:textColor="@color/white"/>
 
         <TextView
             android:id="@+id/tv_date_event"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_below="@id/tv_title_event"/>
+            android:gravity="center_horizontal"
+            android:layout_above="@id/tv_date2_event"
+            android:textColor="@color/white"
+            android:textSize="22sp"/>
+
+        <TextView
+            android:id="@+id/tv_date2_event"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_alignBottom="@id/iv_event"
+            android:layout_marginBottom="16dp"
+            android:textColor="@color/white"
+            android:textSize="16sp"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
             android:drawableLeft="@drawable/ic_add_notebook_24"
             android:text="@string/text_new_booking"
             android:textSize="24sp"
-            android:textStyle="italic"
-            android:layout_below="@id/tv_date_event"/>
-
+            android:textStyle="bold"
+            android:layout_below="@id/iv_event"
+            android:layout_marginTop="96dp"
+            android:backgroundTint="@color/yellow_base_ligth"
+            android:textColor="@color/blue_light_new"/>
     </RelativeLayout>
 
     <include
