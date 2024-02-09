@@ -31,6 +31,7 @@ object Event {
                             value.id,
                             value.getString(Constants.TITLE)!!,
                             value.getString(Constants.IMAGE)!!,
+                            value.getBoolean(Constants.IS_REGIONAL)!!,
                             value.getDate(Constants.DATE)!!
                         )
                         trySend(event)

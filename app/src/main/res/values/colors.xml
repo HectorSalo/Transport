@@ -3,11 +3,14 @@
     <color name="blue_base_ligth">#C5CAE9</color>
     <color name="blue_base_normal">#3F51B5</color>
     <color name="blue_base_dark">#303F9F</color>
-    <color name="yellow_base_ligth">#FAEE87</color>
+    <color name="yellow_base_ligth">#F6EEAB</color>
     <color name="yellow_base_dark">#FFEB3B</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="transparent">#00FFFFFF</color>
+
+    <color name="blue_light_new">#004AAD</color>
+    <color name="blue_dark_new">#006DFF</color>
 
     <color name="red">#D50000</color>
     <color name="green">#64DD17</color>

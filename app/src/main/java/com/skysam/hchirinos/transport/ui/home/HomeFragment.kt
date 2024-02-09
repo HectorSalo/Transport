@@ -3,10 +3,15 @@ package com.skysam.hchirinos.transport.ui.home
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
+import android.text.style.RelativeSizeSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isGone
+import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
@@ -15,12 +20,12 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
 import com.skysam.hchirinos.transport.BuildConfig
 import com.skysam.hchirinos.transport.R
-import com.skysam.hchirinos.transport.common.Classes
 import com.skysam.hchirinos.transport.dataClasses.Booking
 import com.skysam.hchirinos.transport.dataClasses.Bus
 import com.skysam.hchirinos.transport.databinding.FragmentHomeBinding
 import com.skysam.hchirinos.transport.ui.bookings.newBooking.NewBookingActivity
 import java.util.Date
+
 
 class HomeFragment : Fragment() {
 
@@ -73,7 +78,10 @@ class HomeFragment : Fragment() {
                     .load(it.image)
                     .placeholder(R.drawable.logo)
                     .into(binding.ivEvent)
-                binding.tvTitleEvent.text = it.title
+
+                binding.tvTitleEvent.text = if (it.isRegional) getString(R.string.text_convention_regional)
+                else getString(R.string.text_convention_circuit)
+                binding.tvTitle2Event.text = it.title
                 calculateDates(it.date)
             }
         }
@@ -120,13 +128,13 @@ class HomeFragment : Fragment() {
         val diffDays = (dateEvent.time - today.time) / 86400000
 
         binding.tvDateEvent.text = getString(R.string.text_date_event, diffDays.toString())
+        binding.tvDate2Event.text = "para completar el dinero"
     }
 
     private fun sheet() {
         sheetView = binding.sheetInclude.bottomSheet
         val bottomSheetBehavior: BottomSheetBehavior<*>?
         bottomSheetBehavior = BottomSheetBehavior.from(sheetView)
-
     }
 
     /*private fun showSeats() {

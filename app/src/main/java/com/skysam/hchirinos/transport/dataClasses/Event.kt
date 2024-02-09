@@ -6,5 +6,6 @@ data class Event(
     val id: String,
     val title: String,
     val image: String,
+    val isRegional: Boolean,
     val date: Date
 )
