@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.home.HomeFragment">
+    tools:context=".ui.home.HomeFragment"
+    android:id="@+id/coordinator">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -62,12 +63,15 @@
             android:id="@+id/button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_add_notebook_24"
+            app:icon="@drawable/ic_add_notebook_24"
+            app:iconGravity="start"
+            app:iconTint="@color/blue_light_new"
             android:text="@string/text_new_booking"
             android:textSize="24sp"
             android:textStyle="bold"
+            android:layout_marginTop="32dp"
             android:layout_below="@id/iv_event"
-            android:layout_marginTop="96dp"
+            android:layout_centerInParent="true"
             android:backgroundTint="@color/yellow_base_ligth"
             android:textColor="@color/blue_light_new"/>
     </RelativeLayout>

@@ -14,4 +14,8 @@
 
     <color name="red">#D50000</color>
     <color name="green">#64DD17</color>
+    <color name="yellow">#FFC107</color>
+
+    <color name="color_bg_sheet_star_end">#021E43</color>
+    <color name="color_bg_sheet_middle">#1C2B81</color>
 </resources>

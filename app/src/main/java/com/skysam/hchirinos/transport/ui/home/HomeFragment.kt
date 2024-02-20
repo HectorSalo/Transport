@@ -3,15 +3,9 @@ package com.skysam.hchirinos.transport.ui.home
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.ForegroundColorSpan
-import android.text.style.RelativeSizeSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
@@ -20,6 +14,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
 import com.skysam.hchirinos.transport.BuildConfig
 import com.skysam.hchirinos.transport.R
+import com.skysam.hchirinos.transport.common.Classes
 import com.skysam.hchirinos.transport.dataClasses.Booking
 import com.skysam.hchirinos.transport.dataClasses.Bus
 import com.skysam.hchirinos.transport.databinding.FragmentHomeBinding
@@ -51,6 +46,10 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        sheetView = binding.sheetInclude.bottomSheet
+        val bottomSheetBehavior: BottomSheetBehavior<*>?
+        bottomSheetBehavior = BottomSheetBehavior.from(sheetView)
+
         binding.button.setOnClickListener {
             startActivity(Intent(requireContext(), NewBookingActivity::class.java))
         }
@@ -85,7 +84,7 @@ class HomeFragment : Fragment() {
                 calculateDates(it.date)
             }
         }
-        /*viewModel.bookings.observe(viewLifecycleOwner) {
+        viewModel.bookings.observe(viewLifecycleOwner) {
             if (_binding != null) {
                 bookings.clear()
                 bookings.addAll(it)
@@ -106,16 +105,15 @@ class HomeFragment : Fragment() {
                 showRefunds()
                 showBookingsBalance()
             }
-        }*/
+        }
         viewModel.bus.observe(viewLifecycleOwner) {
             if (_binding != null) {
                 bus = it
-                /*showSeats()
+                showSeats()
                 showPaids()
                 showRefunds()
-                showBookingsBalance()*/
+                showBookingsBalance()
                 viewModel.changePriceSeat(bus!!)
-                sheet()
             }
         }
     }
@@ -131,25 +129,21 @@ class HomeFragment : Fragment() {
         binding.tvDate2Event.text = "para completar el dinero"
     }
 
-    private fun sheet() {
-        sheetView = binding.sheetInclude.bottomSheet
-        val bottomSheetBehavior: BottomSheetBehavior<*>?
-        bottomSheetBehavior = BottomSheetBehavior.from(sheetView)
-    }
-
-    /*private fun showSeats() {
+    private fun showSeats() {
         if (bus != null) {
-            binding.tvAvailables.text = if (bus!!.quantity != 0) (bus!!.quantity - seatsReserved).toString()
+            binding.sheetInclude.tvAvailables.text = if (bus!!.quantity != 0) (bus!!.quantity - seatsReserved).toString()
             else getString(R.string.text_not_define)
-            binding.tvReserved.text = seatsReserved.toString()
+            binding.sheetInclude.tvReserved.text = seatsReserved.toString()
         }
     }
 
     private fun showPaids() {
         if (bus != null) {
-            binding.tvRemaining.text =  if (bus!!.price != 0.0) (bus!!.price + totalRefunds - totalPaid).toString()
+            binding.sheetInclude.tvRemaining.text =  if (bus!!.price != 0.0) getString(R.string.text_amount_paid,
+                (bus!!.price + totalRefunds - totalPaid).toString())
             else getString(R.string.text_not_define)
-            binding.tvCollected.text = (totalPaid - totalRefunds).toString()
+            binding.sheetInclude.tvCollected.text = getString(R.string.text_amount_paid,
+                (totalPaid - totalRefunds).toString())
         }
     }
 
@@ -162,12 +156,10 @@ class HomeFragment : Fragment() {
                 if (diff < 0.0) total += diff
             }
             if (total != 0.0) {
-                binding.tvRefund.visibility = View.VISIBLE
-                binding.textView9.visibility = View.VISIBLE
-                binding.tvRefund.text = (total * (-1)).toString()
+                binding.sheetInclude.cvRefundsRemaining.visibility = View.VISIBLE
+                binding.sheetInclude.tvRefund.text = getString (R.string.text_amount_paid, (total * (-1)).toString())
             } else {
-                binding.tvRefund.visibility = View.GONE
-                binding.textView9.visibility = View.GONE
+                binding.sheetInclude.cvRefundsRemaining.visibility = View.GONE
             }
         }
     }
@@ -180,10 +172,10 @@ class HomeFragment : Fragment() {
                         Classes.totalPayments(booking.payments)
                 if (diff <= 0) totalPaid += 1
             }
-            binding.tvBookingsPaid.text = totalPaid.toString()
-            binding.tvBookingsRemaning.text = (bookings.size - totalPaid).toString()
+            binding.sheetInclude.tvBookingsPaid.text = totalPaid.toString()
+            binding.sheetInclude.tvBookingsRemaning.text = (bookings.size - totalPaid).toString()
         }
-    }*/
+    }
 
     private fun showSheetUpdate() {
         val bottomSheetDialog = BottomSheetDialog(requireContext())

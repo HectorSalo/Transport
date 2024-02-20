@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <corners
+        android:topLeftRadius="32dp"
+        android:topRightRadius="32dp">
+
+    </corners>
+
+    <gradient
+        android:angle="90"
+        android:startColor="@color/color_bg_sheet_star_end"
+        android:centerColor="@color/color_bg_sheet_middle"
+        android:endColor="@color/color_bg_sheet_star_end"/>
+
+</shape>
