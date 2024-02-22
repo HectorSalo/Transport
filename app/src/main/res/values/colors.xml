@@ -12,6 +12,8 @@
     <color name="blue_light_new">#004AAD</color>
     <color name="blue_dark_new">#006DFF</color>
 
+    <color name="tv_fragment_home">#0B1655</color>
+
     <color name="red">#D50000</color>
     <color name="green">#64DD17</color>
     <color name="yellow">#FFC107</color>
