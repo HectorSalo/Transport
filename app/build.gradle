@@ -12,8 +12,8 @@ android {
         applicationId "com.skysam.hchirinos.transport"
         minSdk 26
         targetSdk 34
-        versionCode 12
-        versionName "8.1"
+        versionCode 13
+        versionName "9.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

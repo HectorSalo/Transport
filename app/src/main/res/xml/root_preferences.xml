@@ -1,13 +1,16 @@
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory app:title="@string/title_profile">
+    <PreferenceCategory app:title="@string/title_profile"
+        android:layout="@layout/layout_preferences_category">
         <PreferenceScreen
             app:key="signOut"
             app:title="@string/title_sign_out"
             app:icon="@drawable/ic_logout_24"/>
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="@string/notification_header">
+    <PreferenceCategory app:title="@string/notification_header"
+        android:layout="@layout/layout_preferences_category">
 
         <SwitchPreferenceCompat
             app:key="@string/notification_key"
@@ -28,7 +31,8 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="@string/text_about">
+    <PreferenceCategory app:title="@string/text_about"
+        android:layout="@layout/layout_preferences_category">
 
         <PreferenceScreen
             app:key="share_app"
