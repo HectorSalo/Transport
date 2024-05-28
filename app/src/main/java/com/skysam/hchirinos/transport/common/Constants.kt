@@ -38,9 +38,10 @@ object Constants {
     const val IMAGE = "image"
     const val IS_REGIONAL = "isRegional"
 
-    const val METHOD = "method"
     const val TITLE = "title"
+    const val BODY = "body"
     const val MESSAGE = "message"
+    const val NOTIFICATION = "notification"
     const val TOPIC = "topic"
     const val SUCCESS = "success"
     const val SEND_NOTIFICATION_SUCCESS = 3
