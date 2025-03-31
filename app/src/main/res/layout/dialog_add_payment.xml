@@ -47,10 +47,10 @@
             android:text="@string/text_hector" />
 
         <RadioButton
-            android:id="@+id/rb_jesus"
+            android:id="@+id/rb_aduin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/text_jesus" />
+            android:text="@string/text_aduin" />
     </RadioGroup>
 
     <com.google.android.material.textfield.TextInputLayout

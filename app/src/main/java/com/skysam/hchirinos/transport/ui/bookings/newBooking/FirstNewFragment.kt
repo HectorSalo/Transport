@@ -138,7 +138,7 @@ class FirstNewFragment : Fragment(), TextWatcher, OnClick {
         val payments = mutableListOf<Payment>()
 
         if (binding.checkBox.isChecked) {
-            if (!binding.rbCarlos.isChecked && !binding.rbHector.isChecked && !binding.rbJesus.isChecked) {
+            if (!binding.rbCarlos.isChecked && !binding.rbHector.isChecked && !binding.rbAduin.isChecked) {
                 Snackbar.make(binding.root, getString(R.string.error_receiver_null), Snackbar.LENGTH_LONG)
                 .setAnchorView(binding.btnSave)
                 .show()
@@ -147,7 +147,7 @@ class FirstNewFragment : Fragment(), TextWatcher, OnClick {
             var receiver = ""
             if (binding.rbCarlos.isChecked) receiver = getString(R.string.text_carlos)
             if (binding.rbHector.isChecked) receiver = getString(R.string.text_hector)
-            if (binding.rbJesus.isChecked) receiver = getString(R.string.text_jesus)
+            if (binding.rbAduin.isChecked) receiver = getString(R.string.text_aduin)
 
             val payer = binding.etPayer.text.toString()
             if (payer.isEmpty()) {

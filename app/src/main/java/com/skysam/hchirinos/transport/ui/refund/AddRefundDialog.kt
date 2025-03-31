@@ -76,7 +76,7 @@ class AddRefundDialog: DialogFragment(), TextWatcher {
         binding.tfPayer.error = null
         binding.tfAmount.error = null
 
-        if (!binding.rbCarlos.isChecked && !binding.rbHector.isChecked && !binding.rbJesus.isChecked) {
+        if (!binding.rbCarlos.isChecked && !binding.rbHector.isChecked && !binding.rbAduin.isChecked) {
             Toast.makeText(requireContext(), getString(R.string.error_receiver_null), Toast.LENGTH_SHORT)
                 .show()
             return
@@ -84,7 +84,7 @@ class AddRefundDialog: DialogFragment(), TextWatcher {
         var payer = ""
         if (binding.rbCarlos.isChecked) payer = getString(R.string.text_carlos)
         if (binding.rbHector.isChecked) payer = getString(R.string.text_hector)
-        if (binding.rbJesus.isChecked) payer = getString(R.string.text_jesus)
+        if (binding.rbAduin.isChecked) payer = getString(R.string.text_aduin)
 
         val receiver = binding.etPayer.text.toString()
         if (receiver.isEmpty()) {
