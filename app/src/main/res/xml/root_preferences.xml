@@ -7,6 +7,10 @@
             app:key="signOut"
             app:title="@string/title_sign_out"
             app:icon="@drawable/ic_logout_24"/>
+        <PreferenceScreen
+            app:key="deleteAll"
+            app:title="@string/title_delete_all"
+            app:icon="@drawable/ic_delete_forever_24"/>
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/notification_header"

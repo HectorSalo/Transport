@@ -148,4 +148,16 @@ object Bookings {
             .document(id)
             .delete()
     }
+
+    fun deleteAll() {
+        getInstance()
+            .get()
+            .addOnSuccessListener {
+                for (document in it) {
+                    getInstance()
+                        .document(document.id)
+                        .delete()
+                }
+            }
+    }
 }

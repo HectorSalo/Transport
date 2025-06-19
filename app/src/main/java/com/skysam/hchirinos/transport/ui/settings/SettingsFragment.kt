@@ -69,6 +69,12 @@ class SettingsFragment : PreferenceFragmentCompat() {
             true
         }
 
+        val deleteAllPreference: PreferenceScreen = findPreference("deleteAll")!!
+        deleteAllPreference.setOnPreferenceClickListener {
+            deleteAll()
+            true
+        }
+
         loadViewModels()
     }
 
@@ -99,6 +105,19 @@ class SettingsFragment : PreferenceFragmentCompat() {
                     .signOut()
                 requireActivity().startActivity(Intent(requireContext(), InitActivity::class.java))
                 requireActivity().finish()
+            }
+            .setNegativeButton(R.string.text_cancel, null)
+
+        val dialog = builder.create()
+        dialog.show()
+    }
+
+    private fun deleteAll() {
+        val builder = AlertDialog.Builder(requireActivity())
+        builder.setTitle(getString(R.string.title_confirmation_dialog))
+            .setMessage(getString(R.string.message_delete_all))
+            .setPositiveButton(R.string.text_delete) { _, _ ->
+                viewModel.deleteAll()
             }
             .setNegativeButton(R.string.text_cancel, null)
 

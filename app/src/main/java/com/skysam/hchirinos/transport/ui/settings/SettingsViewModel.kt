@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import com.skysam.hchirinos.transport.common.Notifications
 import com.skysam.hchirinos.transport.common.Preferences
+import com.skysam.hchirinos.transport.repositories.Bookings
 
 class SettingsViewModel : ViewModel() {
 
@@ -19,5 +20,9 @@ class SettingsViewModel : ViewModel() {
 
     suspend fun changeAssemblyStatus(status: Boolean) {
         Preferences.changeAssemblyStatus(status)
+    }
+
+    fun deleteAll() {
+        Bookings.deleteAll()
     }
 }
