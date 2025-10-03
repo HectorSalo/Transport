@@ -32,6 +32,7 @@ class AddRefundDialog: DialogFragment(), TextWatcher {
     private lateinit var buttonNegative: Button
     private lateinit var booking: Booking
     private lateinit var dateSelected: Date
+    private var receivers: List<String> = listOf()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         _binding = DialogAddPaymentBinding.inflate(layoutInflater)
@@ -39,6 +40,14 @@ class AddRefundDialog: DialogFragment(), TextWatcher {
         viewModel.bookingToView.observe(this.requireActivity()) {
             if (_binding != null) {
                 booking = it
+            }
+        }
+        viewModel.bus.observe(this.requireActivity()) { bus ->
+            _binding?.let {
+                receivers = bus.receivers
+                binding.rbReceiver1.text = receivers.getOrNull(0) ?: "Encargado"
+                binding.rbReceiver2.text = receivers.getOrNull(1) ?: "Auxiliar 1"
+                binding.rbReceiver3.text = receivers.getOrNull(2) ?: "Auxiliar 2"
             }
         }
 
@@ -76,15 +85,15 @@ class AddRefundDialog: DialogFragment(), TextWatcher {
         binding.tfPayer.error = null
         binding.tfAmount.error = null
 
-        if (!binding.rbCarlos.isChecked && !binding.rbHector.isChecked && !binding.rbAduin.isChecked) {
+        if (!binding.rbReceiver1.isChecked && !binding.rbReceiver2.isChecked && !binding.rbReceiver3.isChecked) {
             Toast.makeText(requireContext(), getString(R.string.error_receiver_null), Toast.LENGTH_SHORT)
                 .show()
             return
         }
         var payer = ""
-        if (binding.rbCarlos.isChecked) payer = getString(R.string.text_carlos)
-        if (binding.rbHector.isChecked) payer = getString(R.string.text_hector)
-        if (binding.rbAduin.isChecked) payer = getString(R.string.text_aduin)
+        if (binding.rbReceiver1.isChecked) payer = receivers[0]
+        if (binding.rbReceiver2.isChecked) payer = receivers[1]
+        if (binding.rbReceiver3.isChecked) payer = receivers[2]
 
         val receiver = binding.etPayer.text.toString()
         if (receiver.isEmpty()) {

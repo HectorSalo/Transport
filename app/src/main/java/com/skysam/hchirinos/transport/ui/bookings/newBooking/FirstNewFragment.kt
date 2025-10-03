@@ -30,6 +30,7 @@ class FirstNewFragment : Fragment(), TextWatcher, OnClick {
     private val viewModel: BookingViewModel by activityViewModels()
     private lateinit var dateSelected: Date
     private var assambly = false
+    private var receivers: List<String> = listOf()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -75,6 +76,14 @@ class FirstNewFragment : Fragment(), TextWatcher, OnClick {
     }
 
     private fun loadViewModels() {
+        viewModel.bus.observe(viewLifecycleOwner) { bus ->
+            _binding?.let {
+                receivers = bus.receivers
+                binding.rbReceiver1.text = receivers.getOrNull(0) ?: "Encargado"
+                binding.rbReceiver2.text = receivers.getOrNull(1) ?: "Auxiliar 1"
+                binding.rbReceiver3.text = receivers.getOrNull(2) ?: "Auxiliar 2"
+            }
+        }
         viewModel.assemblyActive.observe(viewLifecycleOwner) {
             if (_binding != null) {
                 assambly = it
@@ -138,16 +147,16 @@ class FirstNewFragment : Fragment(), TextWatcher, OnClick {
         val payments = mutableListOf<Payment>()
 
         if (binding.checkBox.isChecked) {
-            if (!binding.rbCarlos.isChecked && !binding.rbHector.isChecked && !binding.rbAduin.isChecked) {
+            if (!binding.rbReceiver1.isChecked && !binding.rbReceiver2.isChecked && !binding.rbReceiver3.isChecked) {
                 Snackbar.make(binding.root, getString(R.string.error_receiver_null), Snackbar.LENGTH_LONG)
                 .setAnchorView(binding.btnSave)
                 .show()
                 return
             }
             var receiver = ""
-            if (binding.rbCarlos.isChecked) receiver = getString(R.string.text_carlos)
-            if (binding.rbHector.isChecked) receiver = getString(R.string.text_hector)
-            if (binding.rbAduin.isChecked) receiver = getString(R.string.text_aduin)
+            if (binding.rbReceiver1.isChecked) receiver = receivers[0]
+            if (binding.rbReceiver2.isChecked) receiver = receivers[1]
+            if (binding.rbReceiver3.isChecked) receiver = receivers[2]
 
             val payer = binding.etPayer.text.toString()
             if (payer.isEmpty()) {

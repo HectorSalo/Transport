@@ -29,6 +29,7 @@ object Constants {
     const val PAYER = "payer"
     const val AMOUNT = "amount"
     const val RECEIVER = "receiver"
+    const val RECEIVERS = "receivers"
     const val DAYS = "days"
 
     const val BUS = "bus"

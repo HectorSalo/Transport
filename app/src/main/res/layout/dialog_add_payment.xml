@@ -35,22 +35,19 @@
         app:layout_constraintTop_toBottomOf="@+id/textView">
 
         <RadioButton
-            android:id="@+id/rb_carlos"
+            android:id="@+id/rb_receiver_1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/text_carlos" />
+            android:layout_height="wrap_content" />
 
         <RadioButton
-            android:id="@+id/rb_hector"
+            android:id="@+id/rb_receiver_2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/text_hector" />
+            android:layout_height="wrap_content" />
 
         <RadioButton
-            android:id="@+id/rb_aduin"
+            android:id="@+id/rb_receiver_3"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/text_aduin" />
+            android:layout_height="wrap_content" />
     </RadioGroup>
 
     <com.google.android.material.textfield.TextInputLayout

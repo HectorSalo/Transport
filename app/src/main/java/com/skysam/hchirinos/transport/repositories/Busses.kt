@@ -30,10 +30,13 @@ object Busses {
                     }
 
                     if (value != null && value.exists()) {
+                        @Suppress("UNCHECKED_CAST")
+                        val receivers = value.data?.let { it.getValue(Constants.RECEIVERS) as MutableList<String> } ?: mutableListOf()
                         val bus = Bus(
                             value.id,
                             value.getDouble(Constants.QUANTITY)!!.toInt(),
-                            value.getDouble(Constants.PRICE)!!
+                            value.getDouble(Constants.PRICE)!!,
+                            receivers
                             )
                         trySend(bus)
                     }
