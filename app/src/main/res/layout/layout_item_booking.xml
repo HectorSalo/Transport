@@ -33,6 +33,26 @@
             android:textAppearance="?attr/textAppearanceBody2"
             android:textColor="?android:attr/textColorSecondary" />
 
+        <TextView
+            android:id="@+id/tv_passengers_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Cédulas: 0/0"
+            android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+            />
+
+        <TextView
+            android:id="@+id/tv_passengers_extra"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="⚠ Sobran 0"
+            android:textAppearance="@style/TextAppearance.Material3.LabelSmall"
+            android:visibility="gone"
+            android:textColor="@color/yellow_base_dark" />
+
+
     </LinearLayout>
 
     <TextView

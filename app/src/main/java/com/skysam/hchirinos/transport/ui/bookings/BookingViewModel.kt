@@ -7,6 +7,7 @@ import androidx.lifecycle.asLiveData
 import com.skysam.hchirinos.transport.common.Preferences
 import com.skysam.hchirinos.transport.dataClasses.Booking
 import com.skysam.hchirinos.transport.dataClasses.Bus
+import com.skysam.hchirinos.transport.dataClasses.Passenger
 import com.skysam.hchirinos.transport.dataClasses.Payment
 import com.skysam.hchirinos.transport.dataClasses.Refund
 import com.skysam.hchirinos.transport.repositories.Bookings
@@ -43,4 +44,13 @@ class BookingViewModel : ViewModel() {
     fun updateBooking(booking: Booking) {
         Bookings.updateBooking(booking)
     }
+
+    fun savePassengers(bookingId: String, passengers: List<Passenger>) {
+        Bookings.savePassengers(bookingId, passengers)
+    }
+
+    fun clearPassengers(bookingId: String) {
+        Bookings.clearPassengers(bookingId)
+    }
+
 }

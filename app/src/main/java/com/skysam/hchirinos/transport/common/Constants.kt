@@ -31,6 +31,11 @@ object Constants {
     const val RECEIVER = "receiver"
     const val RECEIVERS = "receivers"
     const val DAYS = "days"
+    const val PASSENGERS = "passengers"
+    const val FULL_NAME = "fullName"
+    const val DOCUMENT_TYPE = "documentType"
+    const val DOCUMENT_NUMBER = "documentNumber"
+
 
     const val BUS = "bus"
     const val PRICE = "price"
@@ -44,10 +49,6 @@ object Constants {
     const val MESSAGE = "message"
     const val NOTIFICATION = "notification"
     const val TOPIC = "topic"
-    const val SUCCESS = "success"
-    const val SEND_NOTIFICATION_SUCCESS = 3
-    const val ERROR_METHOD_NOT_EXIST = 104
-
     const val INFO_APP = "infoApp"
     const val VERSION_CODE = "versionCode"
     const val VERSION_NAME = "versionName"

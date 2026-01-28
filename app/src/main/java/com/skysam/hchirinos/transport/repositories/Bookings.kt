@@ -13,6 +13,7 @@ import com.skysam.hchirinos.transport.common.Constants
 import com.skysam.hchirinos.transport.common.Notifications
 import com.skysam.hchirinos.transport.common.Transport
 import com.skysam.hchirinos.transport.dataClasses.Booking
+import com.skysam.hchirinos.transport.dataClasses.Passenger
 import com.skysam.hchirinos.transport.dataClasses.Payment
 import com.skysam.hchirinos.transport.dataClasses.Refund
 import kotlinx.coroutines.channels.awaitClose
@@ -80,14 +81,25 @@ object Bookings {
                                 refunds.add(prod)
                             }
                         }
+                        val passengers = mutableListOf<Passenger>()
+                        val list = booking.data[Constants.PASSENGERS] as? List<Map<String, Any>>
+                        list?.forEach { item ->
+                            val passenger = Passenger(
+                                fullName = item[Constants.FULL_NAME]?.toString() ?: "",
+                                documentType = item[Constants.DOCUMENT_TYPE]?.toString() ?: "V",
+                                documentNumber = item[Constants.DOCUMENT_NUMBER]?.toString() ?: ""
+                            )
+                            passengers.add(passenger)
+                        }
                         val bookingNew = Booking(
                             booking.id,
                             booking.getString(Constants.NAME)!!,
-                            booking.getDouble(Constants.QUANTITY)!!.toInt(),
+                            (booking.get(Constants.QUANTITY) as? Number)?.toInt() ?: 1,
                             booking.getDate(Constants.DATE)!!,
                             payments,
                             refunds,
-                            booking.getDouble(Constants.DAYS)!!.toInt()
+                            (booking.get(Constants.DAYS) as? Number)?.toInt() ?: 1,
+                            passengers
                         )
                         bookings.add(bookingNew)
                     }
@@ -104,7 +116,8 @@ object Bookings {
             Constants.QUANTITY to booking.quantity,
             Constants.PAYMENTS to booking.payments,
             Constants.REFUNDS to booking.refunds,
-            Constants.DAYS to booking.days
+            Constants.DAYS to booking.days,
+            Constants.PASSENGERS to booking.passengers
         )
         getInstance().add(data)
     }
@@ -141,6 +154,18 @@ object Bookings {
         getInstance()
             .document(id)
             .update(Constants.REFUNDS, FieldValue.arrayUnion(refund))
+    }
+
+    fun savePassengers(bookingId: String, passengers: List<Passenger>) {
+        getInstance()
+            .document(bookingId)
+            .update(Constants.PASSENGERS, passengers)
+    }
+
+    fun clearPassengers(bookingId: String) {
+        getInstance()
+            .document(bookingId)
+            .update(Constants.PASSENGERS, emptyList<Passenger>())
     }
 
     fun deleteBooking(id: String) {

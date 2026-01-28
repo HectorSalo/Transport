@@ -12,6 +12,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.skysam.hchirinos.transport.R
 import com.skysam.hchirinos.transport.common.Classes
+import com.skysam.hchirinos.transport.common.extraPassengersCount
+import com.skysam.hchirinos.transport.common.hasExtraPassengers
+import com.skysam.hchirinos.transport.common.passengersFilledCount
 import com.skysam.hchirinos.transport.dataClasses.Booking
 
 /**
@@ -62,11 +65,23 @@ class BookingAdapter(private val onClick: OnClick):
                     R.id.menu_delete -> onClick.delete(item)
                     R.id.menu_add_payment -> onClick.addPayment(item)
                     R.id.menu_add_refund -> onClick.addRefund(item)
+                    R.id.menu_passengers -> onClick.editPassengers(item)
                 }
                 false
             }
             popMenu.show()
         }
+
+        val filled = item.passengersFilledCount()
+        holder.tvPassengersStatus.text = "Cédulas: ${filled.coerceAtMost(item.quantity)}/${item.quantity}"
+
+        if (item.hasExtraPassengers()) {
+            holder.tvPassengersExtra.visibility = View.VISIBLE
+            holder.tvPassengersExtra.text = "⚠ Sobran ${item.extraPassengersCount()}"
+        } else {
+            holder.tvPassengersExtra.visibility = View.GONE
+        }
+
 
         holder.card.setOnClickListener { onClick.view(item) }
     }
@@ -76,6 +91,8 @@ class BookingAdapter(private val onClick: OnClick):
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val name: TextView = view.findViewById(R.id.tv_name)
         val quantity: TextView = view.findViewById(R.id.tv_quantity)
+        val tvPassengersStatus: TextView = view.findViewById(R.id.tv_passengers_status)
+        val tvPassengersExtra: TextView = view.findViewById(R.id.tv_passengers_extra)
         val menu: TextView = view.findViewById(R.id.tv_menu)
         val image: ImageView = view.findViewById(R.id.imageView)
         val card: MaterialCardView = view.findViewById(R.id.card)

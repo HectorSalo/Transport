@@ -10,6 +10,9 @@
         android:title="@string/text_edit"
         android:id="@+id/menu_edit"/>
     <item
+        android:id="@+id/menu_passengers"
+        android:title="@string/text_passengers_ids" />
+    <item
         android:title="@string/text_delete"
         android:id="@+id/menu_delete"/>
 </menu>

@@ -74,6 +74,7 @@
     <string name="text_3">3</string>
     <string name="text_days_assembly">Días de asamblea reservados</string>
     <string name="text_days_assembly_view">Días de asamblea reservados: %1$s</string>
+    <string name="text_passengers_ids">Pasajeros (cédulas)</string>
 
     <!--Settings -->
     <string name="text_about">Información de la App</string>>

@@ -12,4 +12,5 @@ interface OnClick {
     fun delete(booking: Booking)
     fun addPayment(booking: Booking)
     fun addRefund(booking: Booking)
+    fun editPassengers(booking: Booking)
 }

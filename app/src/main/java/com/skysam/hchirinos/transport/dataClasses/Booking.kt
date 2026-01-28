@@ -13,5 +13,6 @@ data class Booking(
     var date: Date,
     var payments: MutableList<Payment> = mutableListOf(),
     var refunds: MutableList<Refund> = mutableListOf(),
-    var days: Int = 1
+    var days: Int = 1,
+    var passengers: MutableList<Passenger> = mutableListOf()
 )
