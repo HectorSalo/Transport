@@ -1,7 +1,13 @@
 package com.skysam.hchirinos.transport.ui.bookings
 
+import android.content.ContentValues
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.view.*
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.MenuProvider
@@ -12,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.card.MaterialCardView
 import com.skysam.hchirinos.transport.R
+import com.skysam.hchirinos.transport.common.BookingsPassengersPdfGenerator
 import com.skysam.hchirinos.transport.common.Classes
 import com.skysam.hchirinos.transport.dataClasses.Booking
 import com.skysam.hchirinos.transport.databinding.FragmentBookingBinding
@@ -19,6 +26,7 @@ import com.skysam.hchirinos.transport.ui.common.WrapLayoutManager
 import com.skysam.hchirinos.transport.ui.passengers.PassengersBottomSheet
 import com.skysam.hchirinos.transport.ui.payment.AddPaymentDialog
 import com.skysam.hchirinos.transport.ui.refund.AddRefundDialog
+import java.io.IOException
 
 class BookingFragment : Fragment(), OnClick, MenuProvider, SearchView.OnQueryTextListener {
 
@@ -131,6 +139,10 @@ class BookingFragment : Fragment(), OnClick, MenuProvider, SearchView.OnQueryTex
                 filter()
                 true
             }
+            R.id.app_bar_pdf -> {
+                downloadBookingsPdf()
+                true
+            }
             else -> false
         }
     }
@@ -201,5 +213,66 @@ class BookingFragment : Fragment(), OnClick, MenuProvider, SearchView.OnQueryTex
             if (diff > 0.0 && !paids) list.add(it)
         }
         bookingAdapter.updateList(list)
+    }
+
+    private fun downloadBookingsPdf() {
+        if (bookings.isEmpty()) {
+            Toast.makeText(requireContext(), getString(R.string.msg_no_bookings), Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        try {
+            val result = BookingsPassengersPdfGenerator.generate(
+                bookings = bookings
+            )
+
+            val uri = savePdfToDownloads(result.fileName, result.bytes)
+
+            Toast.makeText(requireContext(), getString(R.string.msg_pdf_saved), Toast.LENGTH_SHORT).show()
+
+            sharePdf(uri)
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Toast.makeText(requireContext(), getString(R.string.msg_pdf_error), Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun savePdfToDownloads(fileName: String, bytes: ByteArray): Uri {
+        val resolver = requireContext().contentResolver
+
+        val contentValues = ContentValues().apply {
+            put(MediaStore.Downloads.DISPLAY_NAME, fileName)
+            put(MediaStore.Downloads.MIME_TYPE, "application/pdf")
+
+            put(MediaStore.Downloads.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS)
+            put(MediaStore.Downloads.IS_PENDING, 1)
+        }
+
+        val collection =
+            MediaStore.Downloads.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY)
+
+        val itemUri = resolver.insert(collection, contentValues)
+            ?: throw IOException("No se pudo crear el archivo en Downloads")
+
+        resolver.openOutputStream(itemUri, "w")?.use { out ->
+            out.write(bytes)
+            out.flush()
+        } ?: throw IOException("No se pudo abrir OutputStream para el PDF")
+
+        contentValues.clear()
+        contentValues.put(MediaStore.Downloads.IS_PENDING, 0)
+        resolver.update(itemUri, contentValues, null, null)
+
+        return itemUri
+    }
+
+    private fun sharePdf(uri: Uri) {
+        val shareIntent = Intent(Intent.ACTION_SEND).apply {
+            type = "application/pdf"
+            putExtra(Intent.EXTRA_STREAM, uri)
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
+        startActivity(Intent.createChooser(shareIntent, "Compartir PDF"))
     }
 }

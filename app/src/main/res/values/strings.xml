@@ -75,6 +75,11 @@
     <string name="text_days_assembly">Días de asamblea reservados</string>
     <string name="text_days_assembly_view">Días de asamblea reservados: %1$s</string>
     <string name="text_passengers_ids">Pasajeros (cédulas)</string>
+    <string name="text_download_pdf">Descargar PDF</string>
+    <string name="msg_no_passengers">Esta reserva no tiene pasajeros.</string>
+    <string name="msg_pdf_saved">PDF guardado en Descargas.</string>
+    <string name="msg_pdf_error">Error generando PDF.</string>
+    <string name="msg_no_bookings">No hay reservas para exportar.</string>
 
     <!--Settings -->
     <string name="text_about">Información de la App</string>>
