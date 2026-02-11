@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.skysam.hchirinos.transport.dataClasses.Booking
 import com.skysam.hchirinos.transport.dataClasses.Passenger
 import com.skysam.hchirinos.transport.dataClasses.PassengerRow
@@ -16,7 +16,8 @@ import com.skysam.hchirinos.transport.ui.bookings.BookingViewModel
 /**
  * Created by Hector Chirinos in the home office on 27 ene. 2026
  */
-class PassengersBottomSheet : BottomSheetDialogFragment() {
+class PassengersBottomSheet : DialogFragment() {
+
 
     private var _binding: BottomsheetPassengersBinding? = null
     private val binding get() = _binding!!
@@ -28,9 +29,12 @@ class PassengersBottomSheet : BottomSheetDialogFragment() {
     private var expectedQuantity: Int = 0
     private var initialized = false
 
-    override fun getTheme(): Int {
-        // Overlay M3 del material (ya existe en la lib)
-        return com.google.android.material.R.style.ThemeOverlay_Material3_BottomSheetDialog
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(
+            STYLE_NORMAL,
+            com.google.android.material.R.style.ShapeAppearanceOverlay_MaterialComponents_MaterialCalendar_Window_Fullscreen
+        )
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -46,16 +50,11 @@ class PassengersBottomSheet : BottomSheetDialogFragment() {
             onDeleteExtra = { pos -> passengersAdapter.removeAt(pos) }
         )
 
-        binding.rvPassengers.adapter = passengersAdapter
-
         binding.rvPassengers.layoutManager = LinearLayoutManager(requireContext())
         binding.rvPassengers.adapter = passengersAdapter
 
-        binding.btnSave.setOnClickListener {
-            save()
-        }
+        binding.btnSave.setOnClickListener { save() }
 
-        // Observa el booking seleccionado
         viewModel.bookingToView.observe(viewLifecycleOwner) { b ->
             if (!initialized) {
                 initialized = true
@@ -66,26 +65,24 @@ class PassengersBottomSheet : BottomSheetDialogFragment() {
                 val rows = buildRows(expectedQuantity, b.passengers)
                 passengersAdapter.setRows(rows)
                 passengersAdapter.recomputeExtraFlags(expectedQuantity)
+                updateHeader()
             }
         }
     }
 
     private fun buildRows(quantity: Int, passengers: List<Passenger>): List<PassengerRow> {
-        // muestra slots hasta max(quantity, passengers.size)
         val size = maxOf(quantity, passengers.size)
-        val list = MutableList(size) { index ->
+        return MutableList(size) { index ->
             val p = passengers.getOrNull(index) ?: Passenger()
             PassengerRow(passenger = p, isExtra = index >= quantity)
         }
-        return list
     }
 
     private fun updateHeader() {
         val qty = expectedQuantity.coerceAtLeast(0)
         val rows = passengersAdapter.getRows()
 
-        val filled = rows
-            .take(qty)
+        val filled = rows.take(qty)
             .count { it.passenger.fullName.isNotBlank() && it.passenger.documentNumber.isNotBlank() }
 
         val missing = (qty - filled).coerceAtLeast(0)
@@ -98,16 +95,10 @@ class PassengersBottomSheet : BottomSheetDialogFragment() {
     private fun save() {
         val b = booking ?: return
 
-        // Sanitizar: guarda solo filas donde haya algo escrito.
         val sanitized = passengersAdapter.getRows()
             .map { it.passenger }
             .filter { it.fullName.isNotBlank() || it.documentNumber.isNotBlank() }
-            .map {
-                // Normaliza tipo doc
-                it.apply {
-                    documentType = documentType.ifBlank { "V" }
-                }
-            }
+            .map { it.apply { documentType = documentType.ifBlank { "V" } } }
 
         viewModel.savePassengers(b.id, sanitized)
         dismiss()
